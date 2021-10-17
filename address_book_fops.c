@@ -15,17 +15,34 @@ Status load_file(AddressBook *address_book)
 	/* 
 	 * Check for file existance
 	 */
+	address_book->fp = fopen(DEFAULT_FILE, "r"); // only need to read for checking file existance
+	if(address_book->fp == NULL)
+	{
+		ret = errno; // set ret equal to errno
+	}
 
 	if (ret == 0)
 	{
 		/* 
 		 * Do the neccessary step to open the file
-		 * Do error handling
+		 * Do error handling; errno = 0 if file exists.
 		 */ 
+		address_book->fp = fopen(DEFAULT_FILE, "r");
+		if(address_book->fp == NULL)
+		{
+			ret = errno; // set ret equal to errno
+			perror("Error");
+			//return e_fail;
+		}
+		else
+		{
+			fclose(address_book->fp);
+		}
 	}
 	else
 	{
 		/* Create a file for adding entries */
+		address_book->fp = fopen(DEFAULT_FILE, "w");
 	}
 
 	return e_success;
