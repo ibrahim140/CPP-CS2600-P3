@@ -15,6 +15,7 @@ Status load_file(AddressBook *address_book)
 	/* 
 	 * Check for file existance
 	 */
+	ret = fopen(DEFAULT_FILE, "w");
 
 	if (ret == 0)
 	{
@@ -22,10 +23,13 @@ Status load_file(AddressBook *address_book)
 		 * Do the neccessary step to open the file
 		 * Do error handling
 		 */ 
+		printf("File doesn't exist.");
+		return e_fail;
 	}
 	else
 	{
 		/* Create a file for adding entries */
+		address_book -> fp = fopen(DEFAULT_FILE, "w");
 	}
 
 	return e_success;
