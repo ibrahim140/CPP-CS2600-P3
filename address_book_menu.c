@@ -211,19 +211,19 @@ Status edit_contact(AddressBook *address_book)
 			if (strcmp(*address_book->list[i].name, contactName) == 0)
 			{
 				strcpy(*address_book->list[i].name, newName);
-				printf("Contact name has been edited.\n");
+				printf("Contact name has been edited to %s.\n", newName);
 				break;
 			}
 			else if (strcmp(*address_book->list[i].phone_numbers, phoneNumber) == 0)
 			{
 				strcpy(*address_book->list[i].phone_numbers, newPhone);
-				printf("Phone number has been edited.\n");
+				printf("Phone number has been edited to %s.\n", newPhone);
 				break;
 			}
 			else if (strcmp(*address_book->list[i].email_addresses, email) == 0)
 			{
 				strcpy(*address_book->list[i].email_addresses, newEmail);
-				printf("Email address has been edited.\n");
+				printf("Email address has been edited to %s.\n", newEmail);
 				break;
 			}
 		}
