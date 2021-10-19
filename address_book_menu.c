@@ -208,21 +208,21 @@ Status edit_contact(AddressBook *address_book)
 
 		for (int i = 0; i < address_book->count; i++)
 		{
-			if (strcmp(address_book->list[i].name, contactName) == 0)
+			if (strcmp(*address_book->list[i].name, contactName) == 0)
 			{
-				strcpy(address_book->list[i].name, newName);
+				strcpy(*address_book->list[i].name, newName);
 				printf("Contact name has been edited.\n");
 				break;
 			}
-			else if (strcmp(address_book->list[i].phone_numbers, phoneNumber) == 0)
+			else if (strcmp(*address_book->list[i].phone_numbers, phoneNumber) == 0)
 			{
-				strcpy(address_book->list[i].phone_numbers, newPhone);
+				strcpy(*address_book->list[i].phone_numbers, newPhone);
 				printf("Phone number has been edited.\n");
 				break;
 			}
-			else if (strcmp(address_book->list[i].email_addresses, email) == 0)
+			else if (strcmp(*address_book->list[i].email_addresses, email) == 0)
 			{
-				strcpy(address_book->list[i].email_addresses, newEmail);
+				strcpy(*address_book->list[i].email_addresses, newEmail);
 				printf("Email address has been edited.\n");
 				break;
 			}
