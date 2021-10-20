@@ -29,38 +29,38 @@ Status load_file(AddressBook *address_book)
 			printf("File could not be opened.");
 			return e_fail;
 		}
-		else
-		{
-			char fileLine[1000]
-			int index = 0;
-			char* stringTokenValue;
+		// else
+		// {
+		// 	char fileLine[1000];
+		// 	int index = 0;
+		// 	char stringTokenValue;
 
-			fseek(fp, 0, SEEK_SET);
+		// 	fseek(address_book->fp, 0, SEEK_SET);
 
-			do
-			{	
-				ContactInfo readNewContact;
-				stringTokenValue = strtok(fileLine, ", ");
+		// 	do
+		// 	{	
+		// 		ContactInfo readNewContact;
+		// 		stringTokenValue = *strtok(fileLine, ", ");
 
-				while(stringTokenValue)
-				{
-					//copy string to contactslist, stringTokenValue is the value to be copied
-					strcpy(readNewContact.name[0], stringTokenValue);
-					stringTokenValue = strtok(NULL, ", ");
-					strcpy(readNewContact.phone_numbers[0], stringTokenValue);
-					stringTokenValue = strtok(NULL, ", ");
-					strcpy(readNewContact.email_addresses[0], stringTokenValue);
-					stringTokenValue = strtok(NULL, ", ");
-				}
-				//test if the file is parsed correctly
-				// printf("Contact Name: %s, ", readNewContact.name[0]); //print name
-				// printf("Phone Number: %s, ", readNewContact.phone_numbers[0]); //print phone #
-				// printf("Email Address: %s\n", readNewContact.email_addresses[0]); // print email
-				index++;
-			} while (fgets(fileLine, sizeof(fileLine), address_book->fp);
+		// 		while(stringTokenValue)
+		// 		{
+		// 			//copy string to contactslist, stringTokenValue is the value to be copied
+		// 			strcpy(readNewContact.name[0], &stringTokenValue);
+		// 			stringTokenValue = *strtok(NULL, ", ");
+		// 			strcpy(readNewContact.phone_numbers[0], &stringTokenValue);
+		// 			stringTokenValue = *strtok(NULL, ", ");
+		// 			strcpy(readNewContact.email_addresses[0], &stringTokenValue);
+		// 			stringTokenValue = *strtok(NULL, ", ");
+		// 		}
+		// 		//test if the file is parsed correctly
+		// 		// printf("Contact Name: %s, ", readNewContact.name[0]); //print name
+		// 		// printf("Phone Number: %s, ", readNewContact.phone_numbers[0]); //print phone #
+		// 		// printf("Email Address: %s\n", readNewContact.email_addresses[0]); // print email
+		// 		index++;
+		// 	} while (fgets(fileLine, sizeof(fileLine), address_book->fp));
 			
-			fclose(address_book->fp);
-		}
+		// 	fclose(address_book->fp);
+		// }
 	}
 	else
 	{
