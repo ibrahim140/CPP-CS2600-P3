@@ -84,14 +84,16 @@ void main_menu(void)
 	printf("Please select an option: ");
 }
 
-void add_menu(void)
+void add_menu(char addName, char addNumber, char addEmail)
 {
 	menu_header("Add menu\n");
 
-	printf("0. Exit\n");
-	printf("1. Name\n");
-	printf("2. Phone Number\n");
-	printf("3. Email Address\n");
+	printf("0. Back\n");
+	printf("1. Name: %s\n", addName);
+	printf("2. Phone Number: %s\n", addNumber);
+	printf("3. Email Address: %s\n", addEmail);
+	printf("\n");
+	printf("Please select an option: ");
 }
 
 Status menu(AddressBook *address_book)
@@ -116,7 +118,7 @@ Status menu(AddressBook *address_book)
 		switch (option)
 		{
 			case e_add_contact:
-				/* Add your implementation to call add_contacts function here */
+				add_contacts(address_book);
 				break;
 			case e_search_contact:
 				search_contact(address_book);
@@ -143,13 +145,40 @@ Status menu(AddressBook *address_book)
 
 Status add_contacts(AddressBook *address_book)
 {
-	
+	int option;
+	char addName[100] = "";
+	char addNumber[9] = "";
+	char addEmail[100] = "";
 
 	do
 	{
-		add_menu();
-		
-	} while (option != e_exit);
+		add_menu(addName, addNumber, addEmail);
+
+		option = get_option(NUM, "");
+
+		switch(option)
+		{
+			case 1://name
+				printf("Please enter the name: ");
+				scanf("%s", addName);
+				//fprintf(address_book, "%s", addName);
+				break;
+			case 2://phone number
+				printf("Please enter the phone number: ");
+				scanf("%s", addNumber);
+				//fprintf(address_book, "%s", addNumber);
+				break;
+			case 3://email
+				printf("Please enter the email address: ");
+				scanf("%s", addEmail);
+				//fprintf(address_book, "%s", addEmail);
+				break;
+			case 0://exit
+				break;
+		}
+	} while (option != 0);
+
+	fprintf(address_book, "%s", addName);
 	
 }
 
