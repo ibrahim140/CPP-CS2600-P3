@@ -84,6 +84,16 @@ void main_menu(void)
 	printf("Please select an option: ");
 }
 
+void add_menu(void)
+{
+	menu_header("Add menu\n");
+
+	printf("0. Exit\n");
+	printf("1. Name\n");
+	printf("2. Phone Number\n");
+	printf("3. Email Address\n");
+}
+
 Status menu(AddressBook *address_book)
 {
 	ContactInfo backup;
@@ -133,7 +143,14 @@ Status menu(AddressBook *address_book)
 
 Status add_contacts(AddressBook *address_book)
 {
-	/* Add the functionality for adding contacts here */
+	
+
+	do
+	{
+		add_menu();
+		
+	} while (option != e_exit);
+	
 }
 
 Status search(const char *str, AddressBook *address_book, int loop_count, int field, const char *msg, Modes mode)
