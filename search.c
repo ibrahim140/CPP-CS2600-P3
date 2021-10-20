@@ -73,7 +73,8 @@ int main()
 					}
 					printf("%s", value);
 					value = strtok(NULL, ",");
-					column++;
+					break;
+					//column++;
 				}
 			}
 			printf ("'%s' found on line %zu.\n", name, row);
