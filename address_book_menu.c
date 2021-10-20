@@ -53,19 +53,18 @@ int get_option(int type, const char *msg)
 			printf("%s", msg);
 			scanf("%c", &userCharInput);
 
-			if(strcasecmp(&userCharInput, "Y") == 0) // compare without case sensitivity
+			if(userCharInput == 'Y') // compare without case sensitivity
 			{
 				return 'Y';
 			}
-			else if(strcasecmp(&userCharInput, "N") == 0)
+			else if(userCharInput == 'N')
 			{
 				return 'N';
 			}
-			else
-			{
-				printf("Please enter 'Y' for yes or 'N' for no.\n%s", msg);
-			}
-			printf("Please enter 'Y' or 'N'\n");
+			// else
+			// {
+			// 	printf("Please enter 'Y' for yes or 'N' for no.\n%s", msg);
+			// }
 			fflush(stdout);
 		}
 
