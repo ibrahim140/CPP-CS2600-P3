@@ -53,7 +53,7 @@ int get_option(int type, const char *msg)
 
 			printf("%s", msg);
 			scanf("%c", &userNumInput);
-			if((userNumInput >= 0) && (userNumInput <= 6)) //for main menu
+			if((userNumInput >= 0) && (userNumInput <= 6)) //for menu options/features
 			{
 				return userNumInput;
 			}
@@ -211,27 +211,27 @@ Status delete_contact(AddressBook *address_book)
 	}
 	
 	menu_header("Delete Contacts:\n");
-	printf("\t1. Delete by Contact Name\n");
-	printf("\t2. Delete by Phone Number\n");
-	printf("\t3. Delete by E-mail Address\n");
-	//printf("4. delete by si.no");
-	printf("Press 0 to exit.\n");
-	printf("\n");
+	printf("1. Delete by Contact Name\n");
+	printf("2. Delete by Phone Number\n");
+	printf("3. Delete by E-mail Address\n");
+	printf("4. Delete by Serial Number");
+	printf("5. Press 0 to exit.\n");
+	//printf("\n");
 	
 	ContactInfo tempContact;
 
 	do
 	{
 		int userInput = get_option(NUM, "Please select an option: ");
-		while(userInput < 0 || userInput > 3)
+		while(userInput < 0 || userInput > 4)
 		{
 			printf("Please input a valid choice.");
 			menu_header("Delete Contacts:\n");
-			printf("\t1. Delete by Contact Name\n");
-			printf("\t2. Delete by Phone Number\n");
-			printf("\t3. Delete by E-mail Address\n");
-			//printf("4. delete by si.no");
-			printf("Press 0 to exit.\n");
+			printf("1. Delete by Contact Name\n");
+			printf("2. Delete by Phone Number\n");
+			printf("3. Delete by E-mail Address\n");
+			printf("4. Delete by Serial Number");
+			printf("5. Press 0 to exit.\n");
 
 			userInput = get_option(NUM, "Please select an option: ");
 		}
@@ -250,6 +250,10 @@ Status delete_contact(AddressBook *address_book)
 			printf("Enter Contact Email Address: ");
 			scanf("%s", tempContact.email_addresses[0]);
 			break;
+		case 4:
+			printf("Enter Contact Serial Number: ");
+			scanf("%s", tempContact.si_no[0]);
+			break;
 		case 0:
 			return e_success;
 		}
@@ -261,20 +265,31 @@ Status delete_contact(AddressBook *address_book)
 		{
 			free(address_book->list[i]) 
 			address_book->count--;
-			printf("Contact has been deleted.");
+			printf("Contact has been deleted.\n");
 		}
 		else if(strcasecmp(address_book->list[i].phone_numbers, tempContact.phone_numbers) == 0)
 		{
-			free(address_book->list)
+			free(address_book->list[i])
 			address_book->count--;
-			printf("Contact has been deleted.");
+			printf("Contact has been deleted.\n");
 		}
 		else if(strcasecmp(address_book->list[i].email_addresses, tempContact.email_addresses) == 0)
 		{
-			free(address_book->list)
+			free(address_book->list[i])
 			address_book->count--;
-			printf("Contact has been deleted.");
+			printf("Contact has been deleted.\n");
 		}
+		else if (strcasecmp(address_book->list[i].si_no, tempContact.si_no) == 0)
+		{
+			free(address_book->list[i])
+			address_book->count--;
+			printf("Contact has been deleted.\n");
+		}
+		else
+		{
+			return e_no_match;
+		}
+		
 	}
 	delete_contact(address_book);
 }
