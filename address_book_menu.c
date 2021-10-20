@@ -63,7 +63,7 @@ void menu_header(const char *str)
 	system("clear");
 
 	printf("#######  Address Book  #######\n");
-	if (str != '\0')
+	if (*str != '\0')
 	{
 		printf("#######  %s\n", str);
 	}
@@ -84,7 +84,7 @@ void main_menu(void)
 	printf("Please select an option: ");
 }
 
-void add_menu(char addName, char addNumber, char addEmail)
+void add_menu(char *addName, char *addNumber, char *addEmail)
 {
 	menu_header("Add menu\n");
 
@@ -178,7 +178,7 @@ Status add_contacts(AddressBook *address_book)
 		}
 	} while (option != 0);
 
-	fprintf(address_book, "%s", addName);
+	fprintf(address_book -> fp, "%s", addName);
 	
 }
 

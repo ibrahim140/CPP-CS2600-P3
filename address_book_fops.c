@@ -15,7 +15,7 @@ Status load_file(AddressBook *address_book)
 	/* 
 	 * Check for file existance
 	 */
-	ret = fopen(DEFAULT_FILE, "w");
+	address_book -> fp = fopen(DEFAULT_FILE, "w");
 
 	if (ret == 0)
 	{
