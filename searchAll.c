@@ -43,7 +43,7 @@ int main()
     	printf("========================================================================\n");
     	printf(": Name\t\t\t : Phone No      \t\t : Email ID \n");
     	printf("========================================================================\n");
-		char buffer[1024];
+		/*char buffer[1024];
 		int row = line;
 		int column = 0;
 		while (fgets(buffer, 1024, fp)){
@@ -70,7 +70,18 @@ int main()
 				value = strtok(NULL, ",");
 				column++;
 			}
+		}*/
+		char li[200];
+		while(fgets(li, sizeof(li), fp)){
+			char *token;
+			token = strtok(li, ",");
+			while(token != NULL){
+				printf("%s", token);
+				token = strtok(NULL, ",");
+			}
+			printf("\n");
 		}
+		
 		printf ("'%s' found on line %zu.\n", name, line + 1);
 		printf("========================================================================\n");
 		}
