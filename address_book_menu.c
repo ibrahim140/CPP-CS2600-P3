@@ -14,6 +14,29 @@ void clearInputBuffer()
 	while(getchar() != '\n');
 }
 
+int get_submenu_option(int type, const char *msg)
+{
+	if(type == NUM)
+	{
+		while(1)
+		{
+			int userNumInput;
+			
+			printf("%s", msg);
+			scanf("%d", &userNumInput);
+
+			if((userNumInput >= 0) && (userNumInput <= 3)) //for menu options/features
+			{
+				return userNumInput;
+			}
+			else
+			{
+				printf("Please enter a valid option.");
+			}
+		}
+	}
+}
+
 int get_option(int type, const char *msg)
 {
 	/*
@@ -46,14 +69,6 @@ int get_option(int type, const char *msg)
 			{
 				printf("Please enter 'Y' for yes or 'N' for no.\n%s", msg);
 			}
-
-			/* switch (userCharInput)
-			{
-				case 'y': case 'Y':
-					return 'Y';
-				case 'n': case 'N':
-					return 'N';
-			} */
 			printf("Please enter 'Y' or 'N'\n");
 			fflush(stdout);
 		}
@@ -64,17 +79,18 @@ int get_option(int type, const char *msg)
 		while(1)
 		{
 			int userNumInput;
-			clearInputBuffer(); //clear input buffer
+//			clearInputBuffer(); //clear input buffer -- may not be necessary..
 
 			printf("%s", msg);
-			scanf("%c", &userNumInput);
+			scanf("%d", &userNumInput);
+
 			if((userNumInput >= 0) && (userNumInput <= 6)) //for menu options/features
 			{
 				return userNumInput;
 			}
 			else
 			{
-				printf("Please enter a valid option.\n%s", msg);
+				printf("Please enter a valid option.");
 			}
 		}
 	}
@@ -121,7 +137,8 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-	system("clear");
+	//system("clear");
+	system("cls");
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -220,33 +237,20 @@ Status delete_contact(AddressBook *address_book)
 		printf("The address book is empty.\n");
 	}
 	
-	menu_header("Delete Contacts:\n");
-	printf("1. Delete by Contact Name\n");
-	printf("2. Delete by Phone Number\n");
-	printf("3. Delete by E-mail Address\n");
-	//printf("4. Delete by Serial Number");
-	printf("5. Press 0 to exit.\n");
-	//printf("\n");
 	
 	char* tempContactInfo;
 	char nullStr[10] = {"\0"};
 	int userInput;
 	do
 	{
-		userInput = get_option(NUM, "Please select an option: ");
-		while(userInput < 0 || userInput > 4)
-		{
-			printf("Please input a valid choice.");
-			menu_header("Delete Contacts:\n");
-			printf("1. Delete by Contact Name\n");
-			printf("2. Delete by Phone Number\n");
-			printf("3. Delete by E-mail Address\n");
-			//printf("4. Delete by Serial Number");
-			printf("5. Press 0 to exit.\n");
-
-			userInput = get_option(NUM, "Please select an option: ");
-		}
-
+		menu_header("Delete Contacts:\n");
+		printf("1. Delete Contact by Name\n");
+		printf("2. Delete Contact by Phone\n");
+		printf("3. Delete Contact by E-mail\n");
+		//printf("4. Delete by Serial Number");
+		printf("4. Press 0 for Main Menu\n");
+		userInput = get_submenu_option(NUM, "\nPlease select an option: ");
+	
 		switch (userInput)
 		{
 		case 1:
