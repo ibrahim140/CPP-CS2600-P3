@@ -29,38 +29,39 @@ Status load_file(AddressBook *address_book)
 			printf("File could not be opened.");
 			return e_fail;
 		}
-		// else
-		// {
-		// 	char fileLine[1000];
-		// 	int index = 0;
-		// 	char stringTokenValue;
+		else
+		{
+			char fileLine[1024];
+			int indexRow = 0, indexColumn = 0;
+			fseek(address_book->fp, 0, SEEK_SET);
 
-		// 	fseek(address_book->fp, 0, SEEK_SET);
+			while (fgets(fileLine, sizeof(fileLine), address_book->fp))
+			{
+				indexColumn = 0;
+				indexRow++;
+				ContactInfo readNewContact;
+				char* stringTokenValue = strtok(fileLine, ", ");
 
-		// 	do
-		// 	{	
-		// 		ContactInfo readNewContact;
-		// 		stringTokenValue = *strtok(fileLine, ", ");
-
-		// 		while(stringTokenValue)
-		// 		{
-		// 			//copy string to contactslist, stringTokenValue is the value to be copied
-		// 			strcpy(readNewContact.name[0], &stringTokenValue);
-		// 			stringTokenValue = *strtok(NULL, ", ");
-		// 			strcpy(readNewContact.phone_numbers[0], &stringTokenValue);
-		// 			stringTokenValue = *strtok(NULL, ", ");
-		// 			strcpy(readNewContact.email_addresses[0], &stringTokenValue);
-		// 			stringTokenValue = *strtok(NULL, ", ");
-		// 		}
-		// 		//test if the file is parsed correctly
-		// 		// printf("Contact Name: %s, ", readNewContact.name[0]); //print name
-		// 		// printf("Phone Number: %s, ", readNewContact.phone_numbers[0]); //print phone #
-		// 		// printf("Email Address: %s\n", readNewContact.email_addresses[0]); // print email
-		// 		index++;
-		// 	} while (fgets(fileLine, sizeof(fileLine), address_book->fp));
-			
-		// 	fclose(address_book->fp);
-		// }
+				while (stringTokenValue)
+				{
+					if (indexColumn == 0)
+					{
+						strcpy(readNewContact.name[0], stringTokenValue);
+					}
+					else if (indexColumn == 1)
+					{
+						strcpy(readNewContact.phone_numbers[0], stringTokenValue);
+					}
+					else if (indexColumn == 2)
+					{
+						strcpy(readNewContact.email_addresses[0], stringTokenValue);
+					}
+					stringTokenValue = strtok(NULL, ", ");
+					indexColumn++;
+				}
+			}
+			fclose(address_book->fp);
+		}
 	}
 	else
 	{
