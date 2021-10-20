@@ -11,7 +11,7 @@
 Status load_file(AddressBook *address_book)
 {
 	int ret;
-	struct stat buffer;
+	struct stat buffer; //memory allocation for the buffer on stack
 	/* 
 	 * Check for file existance
 	 */
@@ -26,10 +26,39 @@ Status load_file(AddressBook *address_book)
 		address_book->fp = fopen(DEFAULT_FILE, "r");
 		if (address_book->fp == NULL)
 		{
+			printf("File could not be opened.");
 			return e_fail;
 		}
 		else
 		{
+			char fileLine[1000]
+			int index = 0;
+			char* stringTokenValue;
+
+			fseek(fp, 0, SEEK_SET);
+
+			do
+			{	
+				ContactInfo readNewContact;
+				stringTokenValue = strtok(fileLine, ", ");
+
+				while(stringTokenValue)
+				{
+					//copy string to contactslist, stringTokenValue is the value to be copied
+					strcpy(readNewContact.name[0], stringTokenValue);
+					stringTokenValue = strtok(NULL, ", ");
+					strcpy(readNewContact.phone_numbers[0], stringTokenValue);
+					stringTokenValue = strtok(NULL, ", ");
+					strcpy(readNewContact.email_addresses[0], stringTokenValue);
+					stringTokenValue = strtok(NULL, ", ");
+				}
+				//test if the file is parsed correctly
+				// printf("Contact Name: %s, ", readNewContact.name[0]); //print name
+				// printf("Phone Number: %s, ", readNewContact.phone_numbers[0]); //print phone #
+				// printf("Email Address: %s\n", readNewContact.email_addresses[0]); // print email
+				index++;
+			} while (fgets(fileLine, sizeof(fileLine), address_book->fp);
+			
 			fclose(address_book->fp);
 		}
 	}
