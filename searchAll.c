@@ -1,4 +1,3 @@
-// C program for the above approach
 #include <conio.h>
 #include <stdio.h>
 #include <string.h>
@@ -7,11 +6,10 @@
 // Driver Code
 int main()
 {
-	
 	// Substitute the full file path
 	// for the string file_path
 
-	FILE* fp = fopen("Book.csv", "r");
+	FILE* fp = fopen("address_book.csv", "r");
 
 	int choice;
     printf("###### Address Book ######\n");
@@ -23,12 +21,59 @@ int main()
     printf("\nPlease select an option:");
 	scanf("%d", &choice);
 	if(choice == 1){
-		int i=1;
 		char name[100];
 		printf("Enter Name: ");
 		scanf("%s", name);
-		printf("%s", name);
-		
+		//printf("%s", name);
+		enum { MAXC = 512 };
+		int found = 0, line = 0;
+    	char buf[MAXC] = "";
+    	
+
+    	while (fgets (buf, MAXC, fp)) {     /* read each line */
+        	if (strstr (buf, name)) {       /* test for term  */
+        	    found = 1; 					/* set found flag */
+				break;           
+        	}
+        	if (strchr (buf, '\n')) line++; /* increment line */
+    	}
+		if (found){
+		printf("\n###### Address Book ######\n");
+    	printf("###### Seach Contact by:\n\n");
+    	printf("========================================================================\n");
+    	printf(": Name\t\t\t : Phone No      \t\t : Email ID \n");
+    	printf("========================================================================\n");
+		char buffer[1024];
+		int row = line;
+		int column = 0;
+		while (fgets(buffer, 1024, fp)){
+		column = 0;
+		char* value = strtok(buffer, ",");
+
+			while (value) {
+				// Column 1
+				if (column == 0) {
+					printf("Name: ");
+				}
+
+				// Column 2
+				if (column == 1) {
+					printf("\tNumber: ");
+				}
+
+				// Column 3
+				if (column == 2) {
+					printf("\tEmail: ");
+				}
+
+				printf("%s", value);
+				value = strtok(NULL, ",");
+				column++;
+			}
+		}
+		printf ("'%s' found on line %zu.\n", name, line + 1);
+		printf("========================================================================\n");
+		}
 	}
 	if(choice == 2){
 		char number[100];
@@ -41,66 +86,8 @@ int main()
 		scanf("%s", email);
 	}
     
-    printf("\n###### Address Book ######\n");
-    printf("###### Seach Contact by:\n\n");
-    printf("==========================================================================\n");
-    printf(":No. : Name\t\t : Phone No \t\t : Email ID \t\t :\n");
-    printf("==========================================================================\n");
-    printf(":1 : Joey Weeler\t : 626-232-3232 \t : jweel@gmail.com \t :\n");
-    printf("==========================================================================\n");
-    printf("Press: [q] | Cancel: \n");
+	printf("Press: [q] | Cancel: \n");
 
-	if (!fp)
-		printf("Can't open file\n");
-
-	else {
-		// Here we have taken size of
-		// array 1024 you can modify it
-		char buffer[1024];
-
-		int row = 0;
-		int column = 0;
-
-		while (fgets(buffer, 1024, fp)) {
-			column = 0;
-			row = 0;
-
-			// To avoid printing of column
-			// names in file can be changed
-			// according to need
-			if (row == 1)
-				continue;
-
-			// Splitting the data
-			char* value = strtok(buffer, ",");
-
-			while (value) {
-				// Column 1
-				if (column == 0) {
-					printf("Number: ");
-				}
-
-				// Column 2
-				if (column == 1) {
-					printf("\tName: ");
-				}
-
-				// Column 3
-				if (column == 2) {
-					printf("\tEmail: ");
-				}
-
-				printf("%s", value);
-				value = strtok(NULL, ",");
-				column++;
-				row++;
-			}
-
-			printf("\n");
-		}
-
-		// Close the file
-		fclose(fp);
-	}
+	//fclose(fp);
 	return 0;
 }
