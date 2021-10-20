@@ -27,61 +27,57 @@ int main()
 		//printf("%s", name);
 		enum { MAXC = 512 };
 		int found = 0, line = 0;
-    	char buf[MAXC] = "";
+    		char buf[MAXC] = "";
     	
 
-    	while (fgets (buf, MAXC, fp)) {     /* read each line */
-        	if (strstr (buf, name)) {       /* test for term  */
-        	    found = 1; 					/* set found flag */
+    		while (fgets (buf, MAXC, fp)) {     /* read each line */
+        		if (strstr (buf, name)) {       /* test for term  */
+        	   		found = 1; 					/* set found flag */
 				break;           
-        	}
-        	if (strchr (buf, '\n')) line++; /* increment line */
-    	}
+        		}
+        		if (strchr (buf, '\n')) line++; /* increment line */
+    		}
 		if (found){
-		printf("\n###### Address Book ######\n");
-    	printf("###### Seach Contact by:\n\n");
-    	printf("========================================================================\n");
-    	printf(": Name\t\t\t : Phone No      \t\t : Email ID \n");
-    	printf("========================================================================\n");
-		char buffer[1024];
-		int row = line + 1;
-		int column = 0;
-		while (fgets(buffer, 1024, fp)) {
-			column = 0;
+			printf("\n###### Address Book ######\n");
+    			printf("###### Seach Contact by:\n\n");
+    			printf("========================================================================\n");
+    			printf(": Name\t\t\t : Phone No      \t\t : Email ID \n");
+    			printf("========================================================================\n");
+			char buffer[1024];
+			int row = line + 1;
+			int column = 0;
+			while (fgets(buffer, 1024, fp)) {
+				column = 0;
 
-			// To avoid printing of column
-			// names in file can be changed
-			// according to need
-			//if (row == 1)
-				//continue;
+				// To avoid printing of column
+				// names in file can be changed
+				// according to need
+				//if (row == 1)
+					//continue;
 
-			// Splitting the data
-			char* value = strtok(buffer, ",");
+				// Splitting the data
+				char* value = strtok(buffer, ",");
 
-			while (value) {
-				// Column 1
-				if (column == 0) {
-					printf(": ");
+				while (value) {
+					// Column 1
+					if (column == 0) {
+						printf(": ");
+					}
+					// Column 2
+					if (column == 1) {
+						printf(" \t:");
+					}
+					// Column 3
+					if (column == 2) {
+						printf("\t\t\t:");
+					}
+					printf("%s", value);
+					value = strtok(NULL, ",");
+					column++;
 				}
-
-				// Column 2
-				if (column == 1) {
-					printf(" \t:");
-				}
-
-				// Column 3
-				if (column == 2) {
-					printf("\t\t\t:");
-				}
-
-				printf("%s", value);
-				value = strtok(NULL, ",");
-				column++;
 			}
-
-		}
-		printf ("'%s' found on line %zu.\n", name, row);
-		printf("========================================================================\n");
+			printf ("'%s' found on line %zu.\n", name, row);
+			printf("========================================================================\n");
 		}
 	}
 	if(choice == 2){
@@ -97,6 +93,6 @@ int main()
     
 	printf("Press: [q] | Cancel: \n");
 
-	//fclose(fp);
+	fclose(fp);
 	return 0;
 }
