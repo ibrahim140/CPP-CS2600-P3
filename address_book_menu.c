@@ -217,6 +217,113 @@ Status add_contacts(AddressBook *address_book)
 Status search(const char *str, AddressBook *address_book, int loop_count, int field, const char *msg, Modes mode)
 {
 	/* Add the functionality for adding contacts here */
+	int contactFound = 1; //return 0 for found, 1 for not found
+	ContactInfo *searchPersonInfo;
+
+	address_book->fp = fopen(DEFAULT_FILE, "r");
+	if (address_book->fp != NULL)
+	{
+		switch (field)
+		{
+		case 1:
+			for(int i = 0; i < address_book->count - 1; i++) //iterating through the rows
+			{
+				ContactInfo *searchPersonInfo = &address_book->list[i];
+				for(int contactName = 0; contactName < 1, contactName++) //iterate through names, but only 1 name so only 1 column
+				{
+					if(strcasecmp(searchPersonInfo->name[contactName], str) == 0) //if(strcasecmp(userCharInput, "Y") == 0)
+					{
+						contactFound = 0;
+						printf("%s", address_book->fp, searchPersonInfo.name); // not sure if this is necessary
+						return contactFound;
+					}
+					/* else
+					{
+						contactFound = 1;
+						printf("contact not found");
+						return contactFound;
+					} */
+				}
+			}
+			break;
+		
+		case 2:
+			for(int i = 0; i < address_book->count - 1; i++) //iterating through the rows
+			{
+				ContactInfo *searchPersonInfo = &address_book->list[i];
+				for(int contactPhone = 0; contactPhone < 5, contactPhone++) //iterate through phone #'s
+				{
+					if(strcasecmp(searchPersonInfo->phone_numbers[contactPhone], str) == 0) 
+					{
+						contactFound = 0;
+						printf("%s", address_book->fp, searchPersonInfo.phone_numbers); // not sure if this is necessary
+						return contactFound;
+					}
+					/* else
+					{
+						contactFound = 1;
+						printf("contact not found");
+						return contactFound;
+					} */
+				}
+			}
+			break;
+
+		case 3:
+			for(int i = 0; i < address_book->count - 1; i++) //iterating through the rows
+			{
+				ContactInfo *searchPersonInfo = &address_book->list[i];
+				for(int contactEmail = 0; contactEmail < 5, contactEmail++) //iterate through names, but only 1 name so only 1 column
+				{
+					if(strcasecmp(searchPersonInfo->email_addresses[contactEmail], str) == 0) 
+					{
+						contactFound = 0;
+						printf("%s", address_book->fp, searchPersonInfo.email_addresses); // not sure if this is necessary
+						return contactFound;
+					}
+					/* else
+					{
+						contactFound = 1;
+						printf("contact not found");
+						return contactFound;
+					} */
+				}
+			}
+			break;
+		
+/* 		case 4:
+			for(int i = 0; i < address_book->count - 1; i++) //iterating through the rows
+			{
+				ContactInfo *searchPersonInfo = &address_book->list[i];
+				for(int contactSiNo = 0; contactSiNo < 5, contactSiNo++) //iterate through names, but only 1 name so only 1 column
+				{
+					if(searchPersonInfo->si_no[contactSiNo], str) == 0) 
+					{
+						contactFound = 0;
+						printf("%s", address_book->fp, searchPersonInfo.si_no); // not sure if this is necessary
+						return contactFound;
+					}
+					else
+					{
+						contactFound = 1;
+						printf("contact not found");
+						return contactFound;
+					}
+				}
+			}
+			break; */
+
+		default:
+			break;
+		}
+	}
+	else if(address_book->fp == NULL)
+	{
+		printf("The address book is empty. Use Add Contact to add contacts.\n");
+		//return e_fail;
+	}
+
+	return contactFound;
 }
 
 Status search_contact(AddressBook *address_book)
@@ -234,9 +341,9 @@ Status delete_contact(AddressBook *address_book)
 	/* Add the functionality for delete contacts here */
 	if(address_book == NULL)
 	{
-		printf("The address book is empty.\n");
+		printf("The address book is empty. Use Add Contact to add contacts.\n");
+		return e_fail
 	}
-	
 	
 	char* tempContactInfo;
 	char nullStr[10] = {"\0"};
