@@ -1,6 +1,10 @@
 #ifndef ADDRESS_BOOK_H
 #define ADDRESS_BOOK_H
 
+/* Included files */
+#include <stdio.h>
+
+/* Name of the default file that will be used */
 #define DEFAULT_FILE				"address_book.csv"
 
 /* Length of a contact name  */
