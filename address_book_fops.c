@@ -31,35 +31,28 @@ Status load_file(AddressBook *address_book)
 		}
 		else
 		{
-			char fileLine[1024];
-			int indexRow = 0, indexColumn = 0;
-			fseek(address_book->fp, 0, SEEK_SET);
-
-			while (fgets(fileLine, sizeof(fileLine), address_book->fp))
+			char name[32], phone[32], email[32];
+			int row = 0, column = 0;;
+			enum {MAXC = 512};
+			char buf[MAXC] = "";
+			
+			while (fgets(buf, MAXC, address_book->fp) != NULL)
 			{
-				indexColumn = 0;
-				indexRow++;
-				ContactInfo readNewContact;
-				char* stringTokenValue = strtok(fileLine, ", ");
-
-				while (stringTokenValue)
+				column = 0;
+				char *value = strtok(buf, ", ");
+				while (value)
 				{
-					if (indexColumn == 0)
-					{
-						strcpy(readNewContact.name[0], stringTokenValue);
-					}
-					else if (indexColumn == 1)
-					{
-						strcpy(readNewContact.phone_numbers[0], stringTokenValue);
-					}
-					else if (indexColumn == 2)
-					{
-						strcpy(readNewContact.email_addresses[0], stringTokenValue);
-					}
-					stringTokenValue = strtok(NULL, ", ");
-					indexColumn++;
+					if (column == 0)
+						strcpy(*address_book->list[row].name, value);
+					else if (column == 1)
+						strcpy(*address_book->list[row].phone_numbers, value);
+					else if (column == 2)
+						strcpy(*address_book->list[row].email_addresses, value);
 				}
+				value = strtok(NULL, ", ");
+				row++;
 			}
+
 			fclose(address_book->fp);
 		}
 	}
