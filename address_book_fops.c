@@ -24,6 +24,7 @@ Status load_file(AddressBook *address_book)
 		 * Do error handling
 		 */ 
 		address_book->fp = fopen(DEFAULT_FILE, "r");
+
 		if (address_book->fp == NULL)
 		{
 			printf("File could not be opened.");
@@ -31,12 +32,21 @@ Status load_file(AddressBook *address_book)
 		}
 		else
 		{
+<<<<<<< HEAD
 			char name[32], phone[32], email[32];
 			int row = 0, column = 0;;
 			enum {MAXC = 512};
 			char buf[MAXC] = "";
 			
 			while (fgets(buf, MAXC, address_book->fp) != NULL)
+=======
+			address_book->list = (ContactInfo*)calloc(address_book->count, sizeof(ContactInfo));
+			char fileLine[1024];
+			int indexRow = 0, indexColumn = 0;
+			fseek(address_book->fp, 0, SEEK_SET);
+
+			while (fgets(fileLine, sizeof(fileLine), address_book->fp))
+>>>>>>> c746117b4ee686eb8a059995d4f46a15d41bee7f
 			{
 				column = 0;
 				char *value = strtok(buf, ", ");
