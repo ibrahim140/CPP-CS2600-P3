@@ -31,7 +31,7 @@ Status load_file(AddressBook *address_book)
 	{
 		/* 
 		 * Do the neccessary step to open the file
-		 * Do error handling
+		 * Do error handling; errno = 0 if file exists.
 		 */ 
 		address_book->fp = fopen(DEFAULT_FILE, "r");
 
