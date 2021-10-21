@@ -28,6 +28,13 @@ typedef int bool_t;
 
 typedef enum 
 {
+	name,
+	number,
+	email,
+} Field;
+
+typedef enum 
+{
 	e_add,
 	e_search,
 	e_edit,
@@ -72,8 +79,8 @@ typedef struct
 	char phone_numbers[PHONE_NUMBER_COUNT][NUMBER_LEN];
 	char email_addresses[EMAIL_ID_COUNT][EMAIL_ID_LEN];
 	int si_no;
-	int numberCount;
-	int emailCount;
+	// int numberCount;
+	// int emailCount;
 } ContactInfo;
 
 typedef struct

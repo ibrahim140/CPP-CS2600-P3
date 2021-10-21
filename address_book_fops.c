@@ -7,109 +7,86 @@
 #include <ctype.h>
 
 #include "address_book.h"
+
 void printlist(AddressBook *address_book)
 {
 	printf("---PRINTING LIST---\n");
-	for(int i = 0; i < address_book->count; i++)
+	for (int i = 0; i < address_book->count; i++)
 	{
-		printf("Name: %s, Number: %s, Email: %s\n", address_book->list[i].name[0], 
-					address_book->list[i].phone_numbers[0],address_book->list[i].email_addresses[0]);
+		printf("Name: %s, Number: %s, Email: %s\n", address_book->list[i].name[0], address_book->list[i].phone_numbers[0], address_book->list[i].email_addresses[0]);
 	}
-	printf("\n---FINISHED PRINTING---");
+	printf("\n---FINISHED PRINTING---\n");
 }
 
 Status load_file(AddressBook *address_book)
 {
-	int ret;
-	struct stat buffer; //memory allocation for the buffer on stack
-	/* 
-	 * Check for file existance
-	 */
-	ret = stat(DEFAULT_FILE, &buffer);
+	char line[200]; // buffer for line from file
 
-	if (ret == 0)
+	// Open default file
+	// If doesnt exist it will be created
+	address_book->fp = fopen(DEFAULT_FILE, "a+");
+
+	// Initialize address book attributes
+	address_book->list = (ContactInfo *)malloc(sizeof(ContactInfo) * 100);
+	address_book->count = 0;
+
+	int indexColumn = 0;
+	fseek(address_book->fp, 0, SEEK_SET);
+
+	while (fgets(line, sizeof(line), address_book->fp))
 	{
-		/* 
-		 * Do the neccessary step to open the file
-		 * Do error handling; errno = 0 if file exists.
-		 */ 
-		address_book->fp = fopen(DEFAULT_FILE, "r");
+		ContactInfo personBuffer;
+		indexColumn = 0;
+		char *stringTokenValue = strtok(line, ",");
 
-		if (address_book->fp == NULL)
+		while (stringTokenValue)
 		{
-			printf("File could not be opened.");
-			return e_fail;
-		}
-		else
-		{
-			address_book->list = (ContactInfo *)malloc(sizeof(ContactInfo)*100);
-			//address_book->list = (ContactInfo*)calloc(address_book->count, sizeof(ContactInfo));
-			char fileLine[1024];
-			int indexRow = 0, indexColumn = 0;
-			fseek(address_book->fp, 0, SEEK_SET);
-
-			while (fgets(fileLine, sizeof(fileLine), address_book->fp))
+			if (indexColumn == 0)
 			{
-				indexColumn = 0;
-				indexRow++;
-				ContactInfo readNewContact;
-				char* stringTokenValue = strtok(fileLine, ",");
-
-				while (stringTokenValue)
-				{
-					if (indexColumn == 0)
-					{
-						strcpy(readNewContact.name[0], stringTokenValue);
-					}
-					else if (indexColumn == 1)
-					{
-						strcpy(readNewContact.phone_numbers[0], stringTokenValue);
-					}
-					else if (indexColumn == 2)
-					{
-						strcpy(readNewContact.email_addresses[0], stringTokenValue);
-					}
-					stringTokenValue = strtok(NULL, ",");
-					indexColumn++;
-				}
-				address_book->list[address_book->count++] = readNewContact;
+				strcpy(personBuffer.name[0], stringTokenValue);
 			}
-			fclose(address_book->fp);
-			//printlist(address_book->list);
+			else if (indexColumn == 1)
+			{
+				strcpy(personBuffer.phone_numbers[0], stringTokenValue);
+			}
+			else if (indexColumn == 2)
+			{
+				strcpy(personBuffer.email_addresses[0], stringTokenValue);
+			}
+			stringTokenValue = strtok(NULL, ",");
+			indexColumn++;
 		}
+		address_book->list[address_book->count++] = personBuffer;
 	}
-	else
-	{
-		/* Create a file for adding entries */
-		address_book->fp = fopen(DEFAULT_FILE, "w");
-	}
+	//printlist(address_book);
 
+	fclose(address_book->fp);
 	return e_success;
 }
 
 Status save_file(AddressBook *address_book)
 {
-	/*
-	 * Write contacts back to file.
-	 * Re write the complete file currently
-	 */ 
-	address_book->fp = fopen(DEFAULT_FILE, "wb");
+	// /*
+	//  * Write contacts back to file.
+	//  * Re write the complete file currently
+	//  */
+	// address_book->fp = fopen(DEFAULT_FILE, "wb");
 
-	if (address_book->fp == NULL)
-	{
-		return e_fail;
-	}
+	// if (address_book->fp == NULL)
+	// {
+	// 	return e_fail;
+	// }
 
-	/* 
-	 * Add the logic to save the file
-	 * Make sure to do error handling
-	 */ 
-	for (int i = 0; i < address_book->count; i++)
-	{
-		fwrite(address_book->list[i], sizeof(struct ContactInfo), 1, address_book->fp);
-	}
+	// /*
+	//  * Add the logic to save the file
+	//  * Make sure to do error handling
+	//  */
+	// for (int i = 0; i < address_book->count; i++)
+	// {
+	// 	fwrite(address_book->list[i], sizeof(struct ContactInfo), 1, address_book->fp);
+	// }
 
-	fclose(address_book->fp);
+	// fclose(address_book->fp);
 
 	return e_success;
 }
