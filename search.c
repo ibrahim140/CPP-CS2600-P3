@@ -6,6 +6,9 @@
 int main()
 {
 	FILE* fp = fopen("address_book.csv", "r");
+	char answer[100];
+	do{
+	
 
 	int choice;
     printf("###### Address Book ######\n");
@@ -138,7 +141,9 @@ int main()
 			printf("========================================================================\n");
 		}
 	} 
-	printf("Press: [q] | Cancel: \n");
+	printf("Press: [q] to cancel: \n");
+	scanf("%s", answer);
+	}while (strcmp(answer, "q") != 0);
 
 	fclose(fp);
 	return 0;
