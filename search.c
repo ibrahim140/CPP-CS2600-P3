@@ -3,12 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-// Driver Code
 int main()
 {
-	// Substitute the full file path
-	// for the string file_path
-
 	FILE* fp = fopen("address_book.csv", "r");
 
 	int choice;
@@ -29,42 +25,36 @@ int main()
     	char buf[MAXC] = "";
     	
     	while (fgets (buf, MAXC, fp)) {     
-        	if (strstr (buf, name)) {      
-        	   	found = 1; 					
-				break;           
-        	}
+        	if (strstr (buf, name)) {
+        	   	found = 1;	
+				break;
+			} 							
         	if (strchr (buf, '\n')){
 				line++;
 			} 
     	}
 		if (found){
 			printf("\n###### Address Book ######\n");
-    		printf("###### Seach Contact by:\n\n");
+    		printf("###### Seach results by:\n\n");
     		printf("========================================================================\n");
     		printf(": Name\t\t\t : Phone No      \t\t : Email ID \n");
     		printf("========================================================================\n");
-			char buffer[1024];
 			int column = 0;
-			while (fgets(buffer, 1024, fp)) {
-				column = 0;
-				char* value = strtok(buffer, ",");
-				while (value) {
-					if (column == 0) {
-						printf("Name: ");
-					}
-					if (column == 1) {
-						printf("\tPhone No:");
-					}
-					if (column == 2) {
-						printf("\tEmail:");
-					}
+			char* value = strtok(buf, ",");
+			while (value) {
+				if (column == 0){
+					printf("Name: ");
+				}
+				if (column == 1){
+					printf("\tPhone No:");
+				}
+				if (column == 2){
+					printf("\tEmail:");
+				}
 					printf("%s", value);
 					value = strtok(NULL, ",");
 					column++;
-				}
-				break;
-			}
-			printf ("'%s' found on line %zu.\n", name, line+1);
+				};
 			printf("========================================================================\n");
 		}
 	}
@@ -85,32 +75,26 @@ int main()
     	}
 		if (found){
 			printf("\n###### Address Book ######\n");
-    		printf("###### Seach Contact by:\n\n");
+    		printf("###### Seach results by:\n\n");
     		printf("========================================================================\n");
     		printf(": Name\t\t\t : Phone No      \t\t : Email ID \n");
     		printf("========================================================================\n");
-			char buffer[1024];
 			int column = 0;
-			while (fgets(buffer, 1024, fp)) {
-				column = 0;
-				char* value = strtok(buffer, ",");
-				while (value) {
-					if (column == 0) {
-						printf("Name: ");
-					}
-					if (column == 1) {
-						printf("\tPhone No:");
-					}
-					if (column == 2) {
-						printf("\tEmail:");
-					}
+			char* value = strtok(buf, ",");
+			while (value) {
+				if (column == 0){
+					printf("Name: ");
+				}
+				if (column == 1){
+					printf("\tPhone No:");
+				}
+				if (column == 2){
+					printf("\tEmail:");
+				}
 					printf("%s", value);
 					value = strtok(NULL, ",");
 					column++;
-				}
-				break;
-			}
-			//printf ("'%s' found on line %zu.\n", name, row);
+				};
 			printf("========================================================================\n");
 		}
 	}
@@ -131,36 +115,29 @@ int main()
     	}
 		if (found){
 			printf("\n###### Address Book ######\n");
-    		printf("###### Seach Contact by:\n\n");
+    		printf("###### Seach results by:\n\n");
     		printf("========================================================================\n");
     		printf(": Name\t\t\t : Phone No      \t\t : Email ID \n");
     		printf("========================================================================\n");
-			char buffer[1024];
 			int column = 0;
-			while (fgets(buffer, 1024, fp)) {
-				column = 0;
-				char* value = strtok(buffer, ",");
-				while (value) {
-					if (column == 0) {
-						printf("Name: ");
-					}
-					if (column == 1) {
-						printf("\tPhone No:");
-					}
-					if (column == 2) {
-						printf("\tEmail:");
-					}
+			char* value = strtok(buf, ",");
+			while (value) {
+				if (column == 0){
+					printf("Name: ");
+				}
+				if (column == 1){
+					printf("\tPhone No:");
+				}
+				if (column == 2){
+					printf("\tEmail:");
+				}
 					printf("%s", value);
 					value = strtok(NULL, ",");
 					column++;
-				}
-				break;
-			}
-			//printf ("'%s' found on line %zu.\n", name, row);
+				};
 			printf("========================================================================\n");
 		}
-	}
-    
+	} 
 	printf("Press: [q] | Cancel: \n");
 
 	fclose(fp);
