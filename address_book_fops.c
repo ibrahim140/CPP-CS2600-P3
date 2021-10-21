@@ -7,6 +7,16 @@
 #include <ctype.h>
 
 #include "address_book.h"
+void printlist(AddressBook *address_book)
+{
+	printf("---PRINTING LIST---\n");
+	for(int i = 0; i < address_book->count; i++)
+	{
+		printf("Name: %s, Number: %s, Email: %s\n", address_book->list[i].name[0], 
+					address_book->list[i].phone_numbers[0],address_book->list[i].email_addresses[0]);
+	}
+	printf("\n---FINISHED PRINTING---");
+}
 
 Status load_file(AddressBook *address_book)
 {
@@ -32,7 +42,8 @@ Status load_file(AddressBook *address_book)
 		}
 		else
 		{
-			address_book->list = (ContactInfo*)calloc(address_book->count, sizeof(ContactInfo));
+			address_book->list = (ContactInfo *)malloc(sizeof(ContactInfo)*100);
+			//address_book->list = (ContactInfo*)calloc(address_book->count, sizeof(ContactInfo));
 			char fileLine[1024];
 			int indexRow = 0, indexColumn = 0;
 			fseek(address_book->fp, 0, SEEK_SET);
@@ -40,29 +51,34 @@ Status load_file(AddressBook *address_book)
 			while (fgets(fileLine, sizeof(fileLine), address_book->fp))
 			{
 				indexColumn = 0;
-				indexRow++;
+				
 				ContactInfo readNewContact;
-				char* stringTokenValue = strtok(fileLine, ", ");
+				char* stringTokenValue = strtok(fileLine, ",");
 
 				while (stringTokenValue)
 				{
 					if (indexColumn == 0)
 					{
 						strcpy(readNewContact.name[0], stringTokenValue);
+						//strcpy(*address_book->list[indexRow], readNewContact); //Need a way to get the contact to the list
 					}
 					else if (indexColumn == 1)
 					{
 						strcpy(readNewContact.phone_numbers[0], stringTokenValue);
+						//strcpy(*address_book->list[indexRow], readNewContact);
 					}
 					else if (indexColumn == 2)
 					{
 						strcpy(readNewContact.email_addresses[0], stringTokenValue);
+						//strcpy(*address_book->list[indexRow], readNewContact);
 					}
-					stringTokenValue = strtok(NULL, ", ");
+					stringTokenValue = strtok(NULL, ",");
 					indexColumn++;
 				}
+				indexRow++;
 			}
 			fclose(address_book->fp);
+			printlist(address_book);
 		}
 	}
 	else
