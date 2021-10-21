@@ -146,13 +146,13 @@ Status menu(AddressBook *address_book)
 Status add_contacts(AddressBook *address_book)
 {
 	int option;
-	char addName[100] = "";
-	char addNumber[9] = "";
-	char addEmail[100] = "";
+	ContactInfo person;
+	int numberCount = 0;
+	int emailCount = 0;
 
 	do
 	{
-		add_menu(addName, addNumber, addEmail);
+		add_menu(*person.name, *person.phone_numbers, *person.email_addresses);
 
 		option = get_option(NUM, "");
 
@@ -160,25 +160,23 @@ Status add_contacts(AddressBook *address_book)
 		{
 			case 1://name
 				printf("Please enter the name: ");
-				scanf("%s", addName);
-				//fprintf(address_book, "%s", addName);
+				scanf("%s", *person.name);
 				break;
 			case 2://phone number
 				printf("Please enter the phone number: ");
-				scanf("%s", addNumber);
-				//fprintf(address_book, "%s", addNumber);
+				scanf("%s", *person.phone_numbers);
+				person.numberCount++;
 				break;
 			case 3://email
 				printf("Please enter the email address: ");
-				scanf("%s", addEmail);
-				//fprintf(address_book, "%s", addEmail);
+				scanf("%s", *person.email_addresses);
+				person.emailCount++;
 				break;
 			case 0://exit
+				address_book->list[address_book->count] = person;
 				break;
 		}
 	} while (option != 0);
-
-	fprintf(address_book -> fp, "%s", addName);
 	
 }
 
