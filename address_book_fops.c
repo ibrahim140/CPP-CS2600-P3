@@ -51,7 +51,7 @@ Status load_file(AddressBook *address_book)
 			while (fgets(fileLine, sizeof(fileLine), address_book->fp))
 			{
 				indexColumn = 0;
-				
+				indexRow++;
 				ContactInfo readNewContact;
 				char* stringTokenValue = strtok(fileLine, ",");
 
@@ -60,25 +60,22 @@ Status load_file(AddressBook *address_book)
 					if (indexColumn == 0)
 					{
 						strcpy(readNewContact.name[0], stringTokenValue);
-						//strcpy(*address_book->list[indexRow], readNewContact); //Need a way to get the contact to the list
 					}
 					else if (indexColumn == 1)
 					{
 						strcpy(readNewContact.phone_numbers[0], stringTokenValue);
-						//strcpy(*address_book->list[indexRow], readNewContact);
 					}
 					else if (indexColumn == 2)
 					{
 						strcpy(readNewContact.email_addresses[0], stringTokenValue);
-						//strcpy(*address_book->list[indexRow], readNewContact);
 					}
 					stringTokenValue = strtok(NULL, ",");
 					indexColumn++;
 				}
-				indexRow++;
+				address_book->list[address_book->count++] = readNewContact;
 			}
 			fclose(address_book->fp);
-			printlist(address_book);
+			//printlist(address_book->list);
 		}
 	}
 	else
