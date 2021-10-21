@@ -52,6 +52,7 @@ Status list_contacts(AddressBook *address_book, const char *title, int *index, c
 	 * Should be menu based
 	 * The menu provide navigation option if the entries increase the page size
 	 */ 
+	menu_header("Search Result:");
 
 	return e_success;
 }
@@ -118,6 +119,7 @@ Status menu(AddressBook *address_book)
 				delete_contact(address_book);
 				break;
 			case e_list_contacts:
+				list_contacts(address_book)
 				break;
 				/* Add your implementation to call list_contacts function here */
 			case e_save:

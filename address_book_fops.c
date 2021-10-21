@@ -37,7 +37,7 @@ Status save_file(AddressBook *address_book)
 	 * Write contacts back to file.
 	 * Re write the complete file currently
 	 */ 
-	address_book->fp = fopen(DEFAULT_FILE, "w");
+	address_book->fp = fopen(DEFAULT_FILE, "wb");
 
 	if (address_book->fp == NULL)
 	{
@@ -48,6 +48,10 @@ Status save_file(AddressBook *address_book)
 	 * Add the logic to save the file
 	 * Make sure to do error handling
 	 */ 
+	for (int i = 0; i < address_book->count; i++)
+	{
+		fwrite(address_book->list[i], sizeof(struct ContactInfo), 1, address_book->fp);
+	}
 
 	fclose(address_book->fp);
 
