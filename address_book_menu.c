@@ -332,33 +332,32 @@ Status search_contact(AddressBook *address_book)
 	char answer[100];
 	do{
 	
-
-	int choice;
-    printf("###### Address Book ######\n");
-    printf("###### Seach Contact by:\n\n");
-    printf("0:Back\n");
-    printf("1:Name\n");
-    printf("2:Phone No\n");
-    printf("3:Email ID\n");
-    printf("\nPlease select an option:");
-	scanf("%d", &choice);
-	if(choice == 1){
-		char name[1024];
-		printf("Enter Name: ");
-		scanf("%s", name);
-		enum { MAXC = 512 };
-		int found = 0, line = 0;
-    	char buf[MAXC] = "";
+		int choice;
+    		printf("###### Address Book ######\n");
+    		printf("###### Seach Contact by:\n\n");
+    		printf("0:Back\n");
+    		printf("1:Name\n");
+    		printf("2:Phone No\n");
+    		printf("3:Email ID\n");
+    		printf("\nPlease select an option:");
+		scanf("%d", &choice);
+		if(choice == 1){
+			char name[1024];
+			printf("Enter Name: ");
+			scanf("%s", name);
+			enum { MAXC = 512 };
+			int found = 0, line = 0;
+    			char buf[MAXC] = "";
     	
-    	while (fgets (buf, MAXC, fp)) {     
-        	if (strstr (buf, name)) {
-        	   	found = 1;	
+    			while (fgets (buf, MAXC, fp)) {     
+        		if (strstr (buf, name)) {
+        	   		found = 1;	
 				break;
 			} 							
-        	if (strchr (buf, '\n')){
+        		if (strchr (buf, '\n')){
 				line++;
 			} 
-    	}
+    		}
 		if (found){
 			printf("\n###### Address Book ######\n");
     		printf("###### Seach results by:\n\n");
@@ -382,8 +381,8 @@ Status search_contact(AddressBook *address_book)
 					column++;
 				};
 			printf("========================================================================\n");
+			}
 		}
-	}
 	if(choice == 2){
 		char number[100];
 		printf("Enter Number: ");
