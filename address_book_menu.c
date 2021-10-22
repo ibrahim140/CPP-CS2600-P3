@@ -21,7 +21,7 @@ int get_submenu_option(int type, const char *msg)
 			scanf("%d", &userNumInput);
 			while(getchar() != '\n');
 
-			if ((userNumInput >= 0) && (userNumInput <= 3)) //for menu options/features
+			if ((userNumInput >= 0) && (userNumInput <= 4)) //for menu options/features
 			{
 				return userNumInput;
 			}
@@ -133,7 +133,7 @@ void menu_header(const char *str)
 	fflush(stdout);
 
 	//system("clear");
-	system("cls");
+	system("clear");
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -381,7 +381,7 @@ Status search_contact(AddressBook *address_book)
 Status edit_contact(AddressBook *address_book)
 {
 	/* Add the functionality for edit contacts here */
-	int userInput1, userInput2;
+	int userInput1, userInput2, serial = 0;
 	char userPress;
 	char contactName[32], phoneNumber[32], email[32];
 	char newName[32], newPhone[32], newEmail[32];
@@ -399,26 +399,27 @@ Status edit_contact(AddressBook *address_book)
 		printf("1. Name\n");
 		printf("2. Phone No\n");
 		printf("3. Email ID\n");
+		printf("4. Serial No\n");
 		userInput1 = get_submenu_option(NUM, "\nPlease select an option: ");
 
-		switch (userInput1)
+		if (userInput1 == 1)
 		{
-		case 1:
 			printf("Enter the name: ");
 			scanf("%s", contactName);
 			printf("==========================================================================\n");
-			printf(": Name\t\t : Phone No \t\t : Email ID \t\t :\n");
+			printf(": S.No\t\t : Name\t\t : Phone No \t\t : Email ID \t :\n");
 			printf("==========================================================================\n");
 			for (int i = 0; i < address_book->count; i++)
 			{
-				if (strcmp(*address_book->list[i].name, contactName) == 0)
+				if (strcasecmp(*address_book->list[i].name, contactName) == 0)
 				{
+					serial = address_book->list[i].si_no;
 					strcpy(contactName, *address_book->list[i].name);
 					strcpy(phoneNumber, *address_book->list[i].phone_numbers);
 					strcpy(email, *address_book->list[i].email_addresses);
 				}
 			}
-			printf(": %s \t\t : %s \t\t : %s \t\t :\n", contactName, phoneNumber, email);
+			printf(": %d \t\t : %s : %s \t : %s \t :\n", serial, contactName, phoneNumber, email);
 			printf("==========================================================================\n");
 			printf("Press: [s] = Select, [q] = Cancel: ");
 			scanf("%s", &userPress);
@@ -433,22 +434,22 @@ Status edit_contact(AddressBook *address_book)
 					printf("2. Phone No : %s\n", phoneNumber);
 					printf("3. Email ID : %s\n", email);
 					userInput2 = get_option(NUM, "\nPlease select an option: ");
-					switch (userInput2)
+					if (userInput2 == 1)
 					{
-					case 1:
 						printf("Enter Name: [Just enter removes the entry]: ");
 						scanf("%s", newName);
 						for (int i = 0; i < address_book->count; i++)
 						{
-							if (strcmp(*address_book->list[i].name, contactName) == 0)
+							if (strcasecmp(*address_book->list[i].name, contactName) == 0)
 							{
 								strcpy(*address_book->list[i].name, newName);
 								strcpy(contactName, newName);
 								break;
 							}
 						}
-						break;
-					case 2:
+					}
+					else if (userInput2 == 2)
+					{
 						printf("Enter Phone Number: [Just enter removes the entry]: ");
 						scanf("%s", newPhone);
 						for (int i = 0; i < address_book->count; i++)
@@ -460,8 +461,9 @@ Status edit_contact(AddressBook *address_book)
 								break;
 							}
 						}
-						break;
-					case 3:
+					}
+					else if (userInput2 == 3)
+					{
 						printf("Enter Email ID: [Just enter removes the entry]: ");
 						scanf("%s", newEmail);
 						for (int i = 0; i < address_book->count; i++)
@@ -473,31 +475,32 @@ Status edit_contact(AddressBook *address_book)
 								break;
 							}
 						}
-						break;
-					default:
-						break;
 					}
+					else
+						break;
 				} while (userInput2 != 0);
 			}
 			else if (userPress == 'q')
-				break;
-			break;
-		case 2:
+				continue;
+		}
+		else if (userInput1 == 2)
+		{
 			printf("Enter the phone number: ");
 			scanf("%s", phoneNumber);
 			printf("==========================================================================\n");
-			printf(": Name\t\t : Phone No \t\t : Email ID \t\t :\n");
+			printf(": S.No\t\t : Name\t\t : Phone No \t\t : Email ID \t :\n");
 			printf("==========================================================================\n");
 			for (int i = 0; i < address_book->count; i++)
 			{
 				if (strcmp(*address_book->list[i].phone_numbers, phoneNumber) == 0)
 				{
+					serial = address_book->list[i].si_no;
 					strcpy(contactName, *address_book->list[i].name);
 					strcpy(phoneNumber, *address_book->list[i].phone_numbers);
 					strcpy(email, *address_book->list[i].email_addresses);
 				}
 			}
-			printf(": %s \t\t : %s \t\t : %s \t\t :\n", contactName, phoneNumber, email);
+			printf(": %d \t\t : %s : %s \t : %s \t :\n", serial, contactName, phoneNumber, email);
 			printf("==========================================================================\n");
 			printf("Press: [s] = Select, [q] = Cancel: ");
 			scanf("%s", &userPress);
@@ -512,9 +515,8 @@ Status edit_contact(AddressBook *address_book)
 					printf("2. Phone No : %s\n", phoneNumber);
 					printf("3. Email ID : %s\n", email);
 					userInput2 = get_option(NUM, "\nPlease select an option: ");
-					switch (userInput2)
+					if (userInput2 == 1)
 					{
-					case 1:
 						printf("Enter Name: [Just enter removes the entry]: ");
 						scanf("%s", newName);
 						for (int i = 0; i < address_book->count; i++)
@@ -526,8 +528,9 @@ Status edit_contact(AddressBook *address_book)
 								break;
 							}
 						}
-						break;
-					case 2:
+					}
+					else if (userInput2 == 2)
+					{
 						printf("Enter Phone Number: [Just enter removes the entry]: ");
 						scanf("%s", newPhone);
 						for (int i = 0; i < address_book->count; i++)
@@ -539,8 +542,9 @@ Status edit_contact(AddressBook *address_book)
 								break;
 							}
 						}
-						break;
-					case 3:
+					}
+					else if (userInput2 == 3)
+					{
 						printf("Enter Email ID: [Just enter removes the entry]: ");
 						scanf("%s", newEmail);
 						for (int i = 0; i < address_book->count; i++)
@@ -552,31 +556,32 @@ Status edit_contact(AddressBook *address_book)
 								break;
 							}
 						}
-						break;
-					default:
-						break;
 					}
+					else
+						break;
 				} while (userInput2 != 0);
 			}
 			else if (userPress == 'q')
-				break;
-			break;
-		case 3:
+				continue;
+		}
+		else if (userInput1 == 3)
+		{
 			printf("Enter the email ID: ");
 			scanf("%s", email);
 			printf("==========================================================================\n");
-			printf(": Name\t\t : Phone No \t\t : Email ID \t\t :\n");
+			printf(": S.No\t\t : Name\t\t : Phone No \t\t : Email ID \t :\n");
 			printf("==========================================================================\n");
 			for (int i = 0; i < address_book->count; i++)
 			{
 				if (strcmp(*address_book->list[i].email_addresses, email) == 0)
 				{
+					serial = address_book->list[i].si_no;
 					strcpy(contactName, *address_book->list[i].name);
 					strcpy(phoneNumber, *address_book->list[i].phone_numbers);
 					strcpy(email, *address_book->list[i].email_addresses);
 				}
 			}
-			printf(": %s \t\t : %s \t\t : %s \t\t :\n", contactName, phoneNumber, email);
+			printf(": %d \t\t : %s : %s \t : %s \t :\n", serial, contactName, phoneNumber, email);
 			printf("==========================================================================\n");
 			printf("Press: [s] = Select, [q] = Cancel: ");
 			scanf("%s", &userPress);
@@ -591,22 +596,22 @@ Status edit_contact(AddressBook *address_book)
 					printf("2. Phone No : %s\n", phoneNumber);
 					printf("3. Email ID : %s\n", email);
 					userInput2 = get_option(NUM, "\nPlease select an option: ");
-					switch (userInput2)
+					if (userInput2 == 1)
 					{
-					case 1:
 						printf("Enter Name: [Just enter removes the entry]: ");
 						scanf("%s", newName);
 						for (int i = 0; i < address_book->count; i++)
 						{
-							if (strcmp(*address_book->list[i].name, contactName) == 0)
+							if (strcasecmp(*address_book->list[i].name, contactName) == 0)
 							{
 								strcpy(*address_book->list[i].name, newName);
 								strcpy(contactName, newName);
 								break;
 							}
 						}
-						break;
-					case 2:
+					}
+					else if (userInput2 == 2)
+					{
 						printf("Enter Phone Number: [Just enter removes the entry]: ");
 						scanf("%s", newPhone);
 						for (int i = 0; i < address_book->count; i++)
@@ -618,8 +623,9 @@ Status edit_contact(AddressBook *address_book)
 								break;
 							}
 						}
-						break;
-					case 3:
+					}
+					else if (userInput2 == 3)
+					{
 						printf("Enter Email ID: [Just enter removes the entry]: ");
 						scanf("%s", newEmail);
 						for (int i = 0; i < address_book->count; i++)
@@ -632,14 +638,94 @@ Status edit_contact(AddressBook *address_book)
 							}
 						}
 						break;
-					default:
-						break;
 					}
+					else
+						break;
 				} while (userInput2 != 0);
 			}
 			else if (userPress == 'q')
-				break;
-			break;
+				continue;
+		}
+	else if (userInput1 == 4)
+		{
+			printf("Enter the serial no: ");
+			scanf("%d", &serial);
+			printf("==========================================================================\n");
+			printf(": S.No\t\t : Name\t\t : Phone No \t\t : Email ID \t :\n");
+			printf("==========================================================================\n");
+			for (int i = 0; i < address_book->count; i++)
+			{
+				if (serial == address_book->list[i].si_no)
+				{
+					strcpy(contactName, *address_book->list[i].name);
+					strcpy(phoneNumber, *address_book->list[i].phone_numbers);
+					strcpy(email, *address_book->list[i].email_addresses);
+				}
+			}
+			printf(": %d \t\t : %s : %s \t : %s \t :\n", serial, contactName, phoneNumber, email);
+			printf("==========================================================================\n");
+			printf("Press: [s] = Select, [q] = Cancel: ");
+			scanf("%s", &userPress);
+
+			if (userPress == 's')
+			{
+				do
+				{
+					menu_header("Edit Contact:\n");
+					printf("0. Back\n");
+					printf("1. Name     : %s\n", contactName);
+					printf("2. Phone No : %s\n", phoneNumber);
+					printf("3. Email ID : %s\n", email);
+					userInput2 = get_option(NUM, "\nPlease select an option: ");
+					if (userInput2 == 1)
+					{
+						printf("Enter Name: [Just enter removes the entry]: ");
+						scanf("%s", newName);
+						for (int i = 0; i < address_book->count; i++)
+						{
+							if (strcasecmp(*address_book->list[i].name, contactName) == 0)
+							{
+								strcpy(*address_book->list[i].name, newName);
+								strcpy(contactName, newName);
+								break;
+							}
+						}
+					}
+					else if (userInput2 == 2)
+					{
+						printf("Enter Phone Number: [Just enter removes the entry]: ");
+						scanf("%s", newPhone);
+						for (int i = 0; i < address_book->count; i++)
+						{
+							if (strcmp(*address_book->list[i].phone_numbers, phoneNumber) == 0)
+							{
+								strcpy(*address_book->list[i].phone_numbers, newPhone);
+								strcpy(phoneNumber, newPhone);
+								break;
+							}
+						}
+					}
+					else if (userInput2 == 3)
+					{
+						printf("Enter Email ID: [Just enter removes the entry]: ");
+						scanf("%s", newEmail);
+						for (int i = 0; i < address_book->count; i++)
+						{
+							if (strcmp(*address_book->list[i].email_addresses, email) == 0)
+							{
+								strcpy(*address_book->list[i].email_addresses, newEmail);
+								strcpy(email, newEmail);
+								break;
+							}
+						}
+						break;
+					}
+					else
+						break;
+				} while (userInput2 != 0);
+			}
+			else if (userPress == 'q')
+				continue;
 		}
 
 	} while (userInput1 != 0);
