@@ -28,6 +28,7 @@ typedef int bool_t;
 
 typedef enum 
 {
+	serial,
 	name,
 	number,
 	email,
