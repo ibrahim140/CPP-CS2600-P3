@@ -70,27 +70,14 @@ Status load_file(AddressBook *address_book)
 
 Status save_file(AddressBook *address_book)
 {
-	// /*
-	//  * Write contacts back to file.
-	//  * Re write the complete file currently
-	//  */
-	// address_book->fp = fopen(DEFAULT_FILE, "wb");
+	address_book->fp = fopen(DEFAULT_FILE, "");
 
-	// if (address_book->fp == NULL)
-	// {
-	// 	return e_fail;
-	// }
+	for (int i = 0; i < address_book->count; i++)
+	{
+		address_book->list[i].si_no + "," + address_book->list[i].name + "," + address_book->list[i].phone_numbers + "," + address_book->list[i].email_addresses + ",";
+	}
 
-	// /*
-	//  * Add the logic to save the file
-	//  * Make sure to do error handling
-	//  */
-	// for (int i = 0; i < address_book->count; i++)
-	// {
-	// 	fwrite(address_book->list[i], sizeof(struct ContactInfo), 1, address_book->fp);
-	// }
-
-	// fclose(address_book->fp);
+	fclose(address_book->fp);
 
 	return e_success;
 }
