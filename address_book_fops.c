@@ -43,13 +43,17 @@ Status load_file(AddressBook *address_book)
 		{
 			if (indexColumn == 0)
 			{
-				strcpy(personBuffer.name[0], stringTokenValue);
+				personBuffer.si_no = atoi(stringTokenValue);
 			}
 			else if (indexColumn == 1)
 			{
-				strcpy(personBuffer.phone_numbers[0], stringTokenValue);
+				strcpy(personBuffer.name[0], stringTokenValue);
 			}
 			else if (indexColumn == 2)
+			{
+				strcpy(personBuffer.phone_numbers[0], stringTokenValue);
+			}
+			else if (indexColumn == 3)
 			{
 				strcpy(personBuffer.email_addresses[0], stringTokenValue);
 			}
