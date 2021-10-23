@@ -137,16 +137,69 @@ Status save_prompt(AddressBook *address_book)
 	return e_success;
 }
 
-Status list_contacts(AddressBook *address_book, const char *title, int *index, const char *msg, Modes mode)
+Status list_contacts(AddressBook *address_book /* const char *title, int *index, const char *msg, Modes mode */)
 {
 	/* 
 	 * Add code to list all the contacts availabe in address_book.csv file
 	 * Should be menu based
 	 * The menu provide navigation option if the entries increase the page size
 	 */
-	menu_header("Search Result:");
+	int pageCount = 2, pageStart = 0;
+	char buffer[4];
+	while (1)
+	{
+		menu_header("Search Result: \n");
+		printf("=====================================================================================================================\n");
+		printf(": %-7s", "S.No");
+		printf(": %-35s", "Name");
+		printf(": %-35s", "Phone No");
+		printf(": %-31s:\n", "Email ID");
+		printf("=====================================================================================================================\n");
 
-	return e_success;
+		/* Add the functionality for adding contacts here */
+		ContactInfo *personBuffer;
+
+		for (int i = pageStart; i < pageCount + pageStart; i++) //iterating through the rows
+		{
+			int row = 0;
+			ContactInfo *personBuffer = &address_book->list[i];
+
+			for (int count = 0; count < 1; count++)
+			{
+				printf(": %-7d", personBuffer->si_no);
+				printf(": %-35s", personBuffer->name[0]);
+				printf(": %-35s", personBuffer->phone_numbers[count]);
+				printf(": %-31s:\n", personBuffer->email_addresses[count]);
+				row++;
+				while (row < 5)
+				{
+					printf(": %-7s", "");
+					printf(": %-35s", "");
+					printf(": %-35s", "");
+					printf(": %-31s:\n", "");
+					row++;
+				}
+				printf("=====================================================================================================================\n");
+			}
+		}
+		printf("0. Back\n");
+		printf("1. Next\n");
+		printf("2. Previous\n" );
+		printf("Please enter an Option: ");
+		gets(buffer);
+		if(strcasecmp(buffer, "0"))
+		{
+			return e_success;
+		}
+		else if (strcasecmp(buffer, "1"))
+		{
+			pageStart += pageCount;
+		}
+		else
+		{
+			pageStart -= pageCount;
+		}
+	}
 }
 
 void menu_header(const char *str)
@@ -255,7 +308,8 @@ Status menu(AddressBook *address_book)
 			delete_contact(address_book);
 			break;
 		case e_list_contacts:
-			//list_contacts(address_book) break;
+			list_contacts(address_book);
+			break;
 			/* Add your implementation to call list_contacts function here */
 		case e_save:
 			save_file(address_book);
@@ -327,122 +381,122 @@ Status search(const char *str, AddressBook *address_book, Field field)
 
 	switch (field)
 	{
-	case 0:
-		for (int i = 0; i < address_book->count; i++) //iterating through the rows
-		{
-			int row = 0;
-			ContactInfo *personBuffer = &address_book->list[i];
-
-			for (int count = 0; count < 1; count++)
+		case 0:
+			for (int i = 0; i < address_book->count; i++) //iterating through the rows
 			{
-				if (personBuffer->si_no == atoi(str))
+				int row = 0;
+				ContactInfo *personBuffer = &address_book->list[i];
+
+				for (int count = 0; count < 1; count++)
 				{
-					printf(": %-7d", personBuffer->si_no);
-					printf(": %-35s", personBuffer->name[0]);
-					printf(": %-35s", personBuffer->phone_numbers[count]);
-					printf(": %-31s:\n", personBuffer->email_addresses[count]);
-					row++;
-					while (row < 5)
+					if (personBuffer->si_no == atoi(str))
 					{
-						printf(": %-7s", "");
-						printf(": %-35s", "");
-						printf(": %-35s", "");
-						printf(": %-31s:\n", "");
+						printf(": %-7d", personBuffer->si_no);
+						printf(": %-35s", personBuffer->name[0]);
+						printf(": %-35s", personBuffer->phone_numbers[count]);
+						printf(": %-31s:\n", personBuffer->email_addresses[count]);
 						row++;
+						while (row < 5)
+						{
+							printf(": %-7s", "");
+							printf(": %-35s", "");
+							printf(": %-35s", "");
+							printf(": %-31s:\n", "");
+							row++;
+						}
+						printf("=====================================================================================================================\n");
 					}
-					printf("=====================================================================================================================\n");
 				}
 			}
-		}
-		break;
-	case 1:
-		for (int i = 0; i < address_book->count; i++) //iterating through the rows
-		{
-			int row = 0;
-			ContactInfo *personBuffer = &address_book->list[i];
-
-			for (int count = 0; count < 1; count++)
+			break;
+		case 1:
+			for (int i = 0; i < address_book->count; i++) //iterating through the rows
 			{
-				if (strcasecmp(personBuffer->name[count], str) == 0) //if(strcasecmp(userCharInput, "Y") == 0)
+				int row = 0;
+				ContactInfo *personBuffer = &address_book->list[i];
+
+				for (int count = 0; count < 1; count++)
 				{
-					printf(": %-7d", personBuffer->si_no);
-					printf(": %-35s", personBuffer->name[0]);
-					printf(": %-35s", personBuffer->phone_numbers[count]);
-					printf(": %-31s:\n", personBuffer->email_addresses[count]);
-					row++;
-					while (row < 5)
+					if (strcasecmp(personBuffer->name[count], str) == 0) //if(strcasecmp(userCharInput, "Y") == 0)
 					{
-						printf(": %-7s", "");
-						printf(": %-35s", "");
-						printf(": %-35s", "");
-						printf(": %-31s:\n", "");
+						printf(": %-7d", personBuffer->si_no);
+						printf(": %-35s", personBuffer->name[0]);
+						printf(": %-35s", personBuffer->phone_numbers[count]);
+						printf(": %-31s:\n", personBuffer->email_addresses[count]);
 						row++;
+						while (row < 5)
+						{
+							printf(": %-7s", "");
+							printf(": %-35s", "");
+							printf(": %-35s", "");
+							printf(": %-31s:\n", "");
+							row++;
+						}
+						printf("=====================================================================================================================\n");
 					}
-					printf("=====================================================================================================================\n");
 				}
 			}
-		}
-		break;
+			break;
 
-	case 2:
-		for (int i = 0; i < address_book->count; i++) //iterating through the rows
-		{
-			int row = 0;
-			ContactInfo *personBuffer = &address_book->list[i];
-
-			for (int count = 0; count < 1; count++)
+		case 2:
+			for (int i = 0; i < address_book->count; i++) //iterating through the rows
 			{
-				if (strcasecmp(personBuffer->phone_numbers[count], str) == 0)
+				int row = 0;
+				ContactInfo *personBuffer = &address_book->list[i];
+
+				for (int count = 0; count < 1; count++)
 				{
-					printf(": %-7d", personBuffer->si_no);
-					printf(": %-35s", personBuffer->name[0]);
-					printf(": %-35s", personBuffer->phone_numbers[count]);
-					printf(": %-31s:\n", personBuffer->email_addresses[count]);
-					row++;
-					while (row < 5)
+					if (strcasecmp(personBuffer->phone_numbers[count], str) == 0)
 					{
-						printf(": %-7s", "");
-						printf(": %-35s", "");
-						printf(": %-35s", "");
-						printf(": %-31s:\n", "");
+						printf(": %-7d", personBuffer->si_no);
+						printf(": %-35s", personBuffer->name[0]);
+						printf(": %-35s", personBuffer->phone_numbers[count]);
+						printf(": %-31s:\n", personBuffer->email_addresses[count]);
 						row++;
+						while (row < 5)
+						{
+							printf(": %-7s", "");
+							printf(": %-35s", "");
+							printf(": %-35s", "");
+							printf(": %-31s:\n", "");
+							row++;
+						}
+						printf("=====================================================================================================================\n");
 					}
-					printf("=====================================================================================================================\n");
 				}
 			}
-		}
-		break;
+			break;
 
-	case 3:
-		for (int i = 0; i < address_book->count; i++) //iterating through the rows
-		{
-			int row = 0;
-			ContactInfo *personBuffer = &address_book->list[i];
-
-			for (int count = 0; count < 1; count++)
+		case 3:
+			for (int i = 0; i < address_book->count; i++) //iterating through the rows
 			{
-				if (strcasecmp(personBuffer->email_addresses[count], str) == 0)
+				int row = 0;
+				ContactInfo *personBuffer = &address_book->list[i];
+
+				for (int count = 0; count < 1; count++)
 				{
-					printf(": %-7d", personBuffer->si_no);
-					printf(": %-35s", personBuffer->name[0]);
-					printf(": %-35s", personBuffer->phone_numbers[count]);
-					printf(": %-31s:\n", personBuffer->email_addresses[count]);
-					row++;
-					while (row < 5)
+					if (strcasecmp(personBuffer->email_addresses[count], str) == 0)
 					{
-						printf(": %-7s", "");
-						printf(": %-35s", "");
-						printf(": %-35s", "");
-						printf(": %-31s:\n", "");
+						printf(": %-7d", personBuffer->si_no);
+						printf(": %-35s", personBuffer->name[0]);
+						printf(": %-35s", personBuffer->phone_numbers[count]);
+						printf(": %-31s:\n", personBuffer->email_addresses[count]);
 						row++;
+						while (row < 5)
+						{
+							printf(": %-7s", "");
+							printf(": %-35s", "");
+							printf(": %-35s", "");
+							printf(": %-31s:\n", "");
+							row++;
+						}
+						printf("=====================================================================================================================\n");
 					}
-					printf("=====================================================================================================================\n");
 				}
 			}
-		}
-		break;
-	default:
-		break;
+			break;
+		default:
+			break;
 	}
 
 	return e_success;
@@ -566,7 +620,8 @@ Status edit_contact(AddressBook *address_book)
 						{
 						case 1: //name
 							printf("Enter the name: [Just enter removes the entry]: ");
-							fgets(buffer, sizeof(buffer), stdin);
+							//fgets(buffer, sizeof(buffer), stdin);
+							gets(buffer);
 							if (buffer[0] == '\n') // did user enter only?
 								strcpy(*personBuffer->name, "");
 							else
@@ -574,7 +629,8 @@ Status edit_contact(AddressBook *address_book)
 							break;
 						case 2: //phone number
 							printf("Enter the phone number: [Just enter removes the entry]: ");
-							fgets(buffer, sizeof(buffer), stdin);
+							//fgets(buffer, sizeof(buffer), stdin);
+							gets(buffer);
 							if (buffer[0] == '\n')
 								strcpy(*personBuffer->phone_numbers, "");
 							else
@@ -582,7 +638,8 @@ Status edit_contact(AddressBook *address_book)
 							break;
 						case 3: //email
 							printf("Enter the email address: [Just enter removes the entry]: ");
-							fgets(buffer, sizeof(buffer), stdin);
+							//fgets(buffer, sizeof(buffer), stdin);
+							gets(buffer);
 							if (buffer[0] == '\n')
 								strcpy(*personBuffer->email_addresses, "");
 							else
@@ -694,75 +751,8 @@ Status delete_contact(AddressBook *address_book)
 			}
 		}
 	}while (option != 0);
-	save_prompt(address_book);
 
+	//save_prompt(address_book);
 
-	// int option;
-	//  char *tempContactInfo;
-	//  char nullStr[10] = {"\0"};
-	// int userInput;
-	// do
-	// {
-	// 	delete_menu();
-	// 	option = get_submenu_option(NUM, "Please select an option: ");
-
-	// 	switch (userInput)
-	// 	{
-	// 	case 1:
-	// 		printf("Enter Contact Name: ");
-	// 		scanf("%s", tempContactInfo /* tempContact.name[0] */);
-	// 		break;
-	// 	case 2:
-	// 		printf("Enter Contact Phone Number: ");
-	// 		scanf("%s", tempContactInfo /* tempContact.phone_numbers[0] */);
-	// 		break;
-	// 	case 3:
-	// 		printf("Enter Contact Email Address: ");
-	// 		scanf("%s", tempContactInfo /* tempContact.email_addresses[0] */);
-	// 		break;
-	// 	/* case 4:
-	// 		printf("Enter Contact Serial Number: ");
-	// 		scanf("%s", tempContact.si_no[0]);
-	// 		break; */
-	// 	case 0:
-	// 		return e_success;
-	// 	}
-	// } while (userInput != 0);
-
-	// 	for (int i = 0; i < address_book->count; i++)
-	// 	{
-	// 		if (strcasecmp(*address_book->list[i].name, tempContactInfo) == 0)
-	// 		{
-	// 			//free(address_book->list[i]);
-	// 			strcpy(*address_book->list[i].name, nullStr);
-	// 			address_book->count--;
-	// 			printf("Contact has been deleted.\n");
-	// 		}
-	// 		else if (strcasecmp(*address_book->list[i].phone_numbers, tempContactInfo) == 0)
-	// 		{
-	// 			strcpy(*address_book->list[i].name, nullStr);
-	// 			//free(address_book->list[i]);
-	// 			address_book->count--;
-	// 			printf("Contact has been deleted.\n");
-	// 		}
-	// 		else if (strcasecmp(*address_book->list[i].email_addresses, tempContactInfo) == 0)
-	// 		{
-	// 			strcpy(*address_book->list[i].name, nullStr);
-	// 			//free(address_book->list[i]);
-	// 			address_book->count--;
-	// 			printf("Contact has been deleted.\n");
-	// 		}
-	// 		/* else if (strcasecmp(*address_book->list[i].si_no, tempContact.si_no) == 0)
-	// 		{
-	// 			free(address_book->list[i]);
-	// 			address_book->count--;
-	// 			printf("Contact has been deleted.\n");
-	// 		} */
-	// 		else
-	// 		{
-	// 			return e_no_match;
-	// 		}
-	// 	}
-	// 	delete_contact(address_book);
- 	 	return e_success;
+	return e_success;
 }
