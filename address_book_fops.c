@@ -81,7 +81,7 @@ Status save_file(AddressBook *address_book)
 	for (int i = 0; i < address_book->count; i++)
 	{
 		fprintf(address_book->fp, "%d,%s,%s,%s,\n",  address_book->list[i].si_no, address_book->list[i].name[0],
-				 address_book->list[i].phone_numbers[i][0], address_book->list[i].email_addresses[i][0]); 		// for phone and email, used 2D array.. 
+				 &address_book->list[i].phone_numbers[i][0], &address_book->list[i].email_addresses[i][0]); 		// for phone and email, used 2D array.. 
 
 		//address_book->list[i].si_no + "," + address_book->list[i].name + "," + address_book->list[i].phone_numbers + "," + address_book->list[i].email_addresses + ",";
 	}
