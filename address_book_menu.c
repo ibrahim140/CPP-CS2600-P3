@@ -136,7 +136,7 @@ Status save_prompt(AddressBook *address_book)
 		}
 	} while (option != 'N' || option == 'n');
 
-	free(address_book->list);
+	//free(address_book->list);
 
 	return e_success;
 }
@@ -319,7 +319,6 @@ Status menu(AddressBook *address_book)
 		switch (option)
 		{
 		case e_add_contact:
-			/* Add your implementation to call add_contacts function here */
 			add_contacts(address_book);
 			break;
 		case e_search_contact:
@@ -334,9 +333,10 @@ Status menu(AddressBook *address_book)
 		case e_list_contacts:
 			list_contacts(address_book);
 			break;
-			/* Add your implementation to call list_contacts function here */
 		case e_save:
 			save_file(address_book);
+			printf("Done. Press enter key to continue:");
+			while(getchar() != '\n');
 			break;
 		case e_exit:
 			break;
@@ -380,7 +380,10 @@ Status add_contacts(AddressBook *address_book)
 			break;
 		case 0: //exit
 			if (added)
+			{
+				person.si_no = address_book->count;
 				address_book->list[address_book->count++] = person;
+			}
 			break;
 		}
 	} while (option != 0);
@@ -644,7 +647,6 @@ Status edit_contact(AddressBook *address_book)
 						{
 						case 1: //name
 							printf("Enter the name: [Just enter removes the entry]: ");
-							//fgets(buffer, sizeof(buffer), stdin);
 							gets(buffer);
 							if (buffer[0] == '\n') // did user enter only?
 								strcpy(*personBuffer->name, "");
@@ -653,7 +655,6 @@ Status edit_contact(AddressBook *address_book)
 							break;
 						case 2: //phone number
 							printf("Enter the phone number: [Just enter removes the entry]: ");
-							//fgets(buffer, sizeof(buffer), stdin);
 							gets(buffer);
 							if (buffer[0] == '\n')
 								strcpy(*personBuffer->phone_numbers, "");
@@ -662,7 +663,6 @@ Status edit_contact(AddressBook *address_book)
 							break;
 						case 3: //email
 							printf("Enter the email address: [Just enter removes the entry]: ");
-							//fgets(buffer, sizeof(buffer), stdin);
 							gets(buffer);
 							if (buffer[0] == '\n')
 								strcpy(*personBuffer->email_addresses, "");
@@ -777,8 +777,6 @@ Status delete_contact(AddressBook *address_book)
 			}
 		}
 	} while (option != 0);
-
-	//save_prompt(address_book);
 
 	return e_success;
 }
