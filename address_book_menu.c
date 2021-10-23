@@ -74,6 +74,8 @@ int get_option(int type, const char *msg)
 
 			printf("%s", msg);
 			scanf("%c", &userCharInput);
+			while(getchar() != '\n');
+			//fflush(stdout);
 
 			if (userCharInput == 'Y' || userCharInput == 'y')
 			{
@@ -98,7 +100,8 @@ int get_option(int type, const char *msg)
 
 			printf("%s", msg);
 			scanf("%d", &userNumInput);
-
+while(getchar() != '\n');
+			//fflush(stdout);
 			if ((userNumInput >= 0) && (userNumInput <= 6)) //for menu options/features
 			{
 				return userNumInput;
@@ -145,7 +148,7 @@ Status list_contacts(AddressBook *address_book /* const char *title, int *index,
 	 * The menu provide navigation option if the entries increase the page size
 	 */
 	int pageCount = 2, pageStart = 0;
-	char buffer[4];
+	int buffer;
 	while (1)
 	{
 		menu_header("Search Result: \n");
@@ -185,20 +188,39 @@ Status list_contacts(AddressBook *address_book /* const char *title, int *index,
 		printf("0. Back\n");
 		printf("1. Next\n");
 		printf("2. Previous\n" );
-		printf("Please enter an Option: ");
-		gets(buffer);
-		if(strcasecmp(buffer, "0"))
+		printf("\nPlease enter an Option: ");
+		//while(getchar() != '\n'); 
+		scanf("%d", &buffer);
+		printf("%d", buffer);
+		switch(buffer)
 		{
-			return e_success;
+			case 0:
+				return e_success;
+			case 1:
+				pageStart += pageCount;
+				//return e_success;
+				break;
+			case 2:
+				pageStart -= pageCount;
+				//return e_success;
+				break;
+			default:
+				break;
 		}
-		else if (strcasecmp(buffer, "1"))
+		/* if(strcmp(buffer, "0"))
+		{
+			//return e_success;
+			break;
+		}
+		else if (strcmp(buffer, "1"))
 		{
 			pageStart += pageCount;
+			//return e_success;
 		}
 		else
 		{
 			pageStart -= pageCount;
-		}
+		} */
 	}
 }
 
