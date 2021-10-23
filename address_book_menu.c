@@ -259,9 +259,9 @@ void add_menu(char *addName, char *addNumber, char *addEmail)
 	menu_header("Add menu\n");
 
 	printf("0. Back\n");
-	printf("1. Name: %s\n", addName);
-	printf("2. Phone No: %s\n", addNumber);
-	printf("3. Email ID: %s\n\n", addEmail);
+	printf("1. Name     : %s\n", addName);
+	printf("2. Phone No : %s\n", addNumber);
+	printf("3. Email ID : %s\n\n", addEmail);
 }
 
 void search_menu()
