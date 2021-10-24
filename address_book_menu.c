@@ -136,8 +136,6 @@ Status save_prompt(AddressBook *address_book)
 		}
 	} while (option != 'N' || option == 'n');
 
-	//free(address_book->list);
-
 	return e_success;
 }
 
