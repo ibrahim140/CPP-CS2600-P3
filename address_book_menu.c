@@ -384,27 +384,27 @@ Status add_contacts(AddressBook *address_book)
 
 		switch (option)
 		{
-		case 1: //name
+		case 1: //user adds contact name
 			printf("Please enter the name: ");
 			gets(*person.name);
 			addedName = 1;
 			added = 1;
 			break;
-		case 2: //phone number
+		case 2: //user adds contact phone number
 			printf("Please enter the phone number: ");
 			scanf("%s", *person.phone_numbers);
 			addedPhone = 1;
 			added = 1;
 			person.numberCount++;
 			break;
-		case 3: //email
+		case 3: //user adds contact email
 			printf("Please enter the email address: ");
 			scanf("%s", *person.email_addresses);
 			addedEmail = 1;
 			added = 1;
 			person.emailCount++;
 			break;
-		case 0: //exit
+		case 0: //goes back to the main menu while saving information to the contact
 			if (added)
 			{
 				person.si_no = address_book->count;
@@ -604,22 +604,22 @@ Status search_contact(AddressBook *address_book)
 
 		switch (option)
 		{
-		case 1: //name
+		case 1: //user searches for name
 			field = name;
 			printf("Enter the name: ");
 			gets(buffer);
 			break;
-		case 2: //phone number
+		case 2: //user searches for phone number
 			field = number;
 			printf("Enter the phone number: ");
 			gets(buffer);
 			break;
-		case 3: //email
+		case 3: //user searches for email
 			field = email;
 			printf("Enter the email address: ");
 			gets(buffer);
 			break;
-		case 4: //email
+		case 4: //user searches for serial
 			field = serial;
 			printf("Enter the serial number: ");
 			gets(buffer);
@@ -656,22 +656,22 @@ Status edit_contact(AddressBook *address_book)
 
 		switch (option)
 		{
-		case 1: //name
+		case 1: //user gets to edit contact name
 			field = name;
 			printf("Enter the name: ");
 			gets(buffer);
 			break;
-		case 2: //phone number
+		case 2: //user gets to edit contact phone number
 			field = number;
 			printf("Enter the phone number: ");
 			scanf("%s", buffer);
 			break;
-		case 3: //email
+		case 3: //user gets to edit contact email
 			field = email;
 			printf("Enter the email address: ");
 			scanf("%s", buffer);
 			break;
-		case 4: //email
+		case 4: //user gets to edit contact serial number
 			field = serial;
 			printf("Enter the serial number: ");
 			scanf("%s", buffer);
