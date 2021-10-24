@@ -781,10 +781,10 @@ Status delete_contact(AddressBook *address_book)
 	}
 
 	// declare local variables
-	int option;
-	char buffer[NAME_LEN];
-	Field field;
-	char userPress;
+	int option; // get user input for menu options
+	char buffer[NAME_LEN]; // buffer to hold user inputs
+	Field field; // field for passing to search funciton 
+	char userPress; // get user input for option after search is called
 
 	do
 	{
@@ -795,60 +795,60 @@ Status delete_contact(AddressBook *address_book)
 
 		switch (option)
 		{
-		case 1: //name
-			field = name;
-			printf("Enter the name: ");
-			gets(buffer);
-			break;
-		case 2: //phone number
-			field = number;
-			printf("Enter the phone number: ");
-			gets(buffer);
-			break;
-		case 3: //email
-			field = email;
-			printf("Enter the email address: ");
-			gets(buffer);
-			break;
-		case 4: //email
-			field = serial;
-			printf("Enter the serial number: ");
-			gets(buffer);
-			break;
-		case 0: //exits
-			return e_success;
+			case 1: //name
+				field = name; // set field to name
+				printf("Enter the name: "); // prompt user
+				gets(buffer); // get input
+				break;
+			case 2: //phone number
+				field = number; // set field to number
+				printf("Enter the phone number: "); // prompt user
+				gets(buffer); // get input
+				break;
+			case 3: //email
+				field = email; // set field to email
+				printf("Enter the email address: "); // prompt user
+				gets(buffer); // get input
+				break;
+			case 4: //email
+				field = serial; // set field to serial number
+				printf("Enter the serial number: "); // prompt user
+				gets(buffer); // get input
+				break;
+			case 0: //exits
+				return e_success;
 		}
 
 		// Search for element that the buffer contains
 		search(buffer, address_book, field);
 		printf("Press: [s] = Select, [q] = Cancel: "); // prompt user for an input
 		scanf("%s", &userPress);					   // get user input
-		while (getchar() != '\n')
-			; // clear standard input (to no get the '\n' character)
+		while (getchar() != '\n'); // clear standard input (to no get the '\n' character)
 
 		if (userPress == 's' || userPress == 'S')
 		{
 			printf("Select a Serial Number (S.No) to Delete: "); //prompt user for serial # input
 			scanf("%s", &userPress);							 // get user input
-			while (getchar() != '\n')
-				;
+			while (getchar() != '\n');// clear standard input
 
-			int i;
+			int i; // Local variable for loop iteration
 			for (i = 0; i < address_book->count; i++) //iterating through the rows
 			{
+				// get contact from list and store into personBuffer
 				ContactInfo *personBuffer = &address_book->list[i];
+				// check if the users input matches the contact in the list
 				if (personBuffer->si_no == atoi(&userPress))
 				{
 					// print the info of the contact to be deleted
 					menu_header("Delete Contact:\n");
 					printf("0. Back\n");
-					printf("1. Name       : %s\n", personBuffer->name[0]);
-					printf("2. Phone No 1 : %s\n", personBuffer->phone_numbers[0]);
-					for (int j = 1; j < personBuffer->numberCount; j++)
-						printf("            %d : %s\n", j + 1, personBuffer->phone_numbers[j]);
-					printf("3. Email ID 1 : %s\n", personBuffer->email_addresses[0]);
-					for (int j = 1; j < personBuffer->emailCount; j++)
-						printf("            %d : %s\n", j + 1, personBuffer->email_addresses[j]);
+					printf("1. Name       : %s\n", personBuffer->name[0]); // print contact name
+					printf("2. Phone No 1 : %s\n", personBuffer->phone_numbers[0]); // print contacts 1st phone number
+					for (int j = 1; j < personBuffer->numberCount; j++) // iterate through the other phone numbers
+						printf("            %d : %s\n", j + 1, personBuffer->phone_numbers[j]); // print other phone #'s
+					printf("3. Email ID 1 : %s\n", personBuffer->email_addresses[0]); // print contacts 1st email ID
+					for (int j = 1; j < personBuffer->emailCount; j++) // iterate through the other email ID's
+						printf("            %d : %s\n", j + 1, personBuffer->email_addresses[j]); // print other email ID's
 					break;
 				}
 			}
@@ -878,5 +878,6 @@ Status delete_contact(AddressBook *address_book)
 		}
 	} while (option != 0);
 
+	// return e_success
 	return e_success;
 }
