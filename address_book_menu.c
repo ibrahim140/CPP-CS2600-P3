@@ -699,35 +699,61 @@ Status edit_contact(AddressBook *address_book)
 					{
 						menu_header("Edit Contact:\n");
 						printf("0. Back\n");
-						printf("1. Name	      : %s\n", personBuffer->name[0]);
+						printf("1. Name       : %s\n", personBuffer->name[0]);
 						printf("2. Phone No 1 : %s\n", personBuffer->phone_numbers[0]);
-						printf("3. Email ID 1 : %s\n\n", personBuffer->email_addresses[0]);
-						userPress = get_submenu_option(NUM, "Please select an option: ");
+						for (int j = 1; j < personBuffer->numberCount; j++)
+							printf("            %d : %s\n", j + 1, personBuffer->phone_numbers[j]);
+						printf("3. Email ID 1 : %s\n", personBuffer->email_addresses[0]);
+						for (int j = 1; j < personBuffer->emailCount; j++)
+							printf("            %d : %s\n", j + 1, personBuffer->email_addresses[j]);
+
+						userPress = get_submenu_option(NUM, "\nPlease select an option: ");
+
 						switch (userPress)
 						{
 						case 1: //name
 							printf("Enter the name: [Just enter removes the entry]: ");
 							gets(buffer);
 							if (buffer[0] == '\n') // did user enter only?
-								strcpy(*personBuffer->name, "");
+								strcpy(*personBuffer->name, " ");
 							else
 								strcpy(*personBuffer->name, buffer);
 							break;
 						case 2: //phone number
+							do
+							{
+								printf("Enter the phone number index to be changed [Max %d]: ", personBuffer->numberCount + 1);
+								scanf("%s", &userPress);
+								while (getchar() != '\n')
+									;
+								if (atoi(&userPress) == personBuffer->numberCount + 1)
+									personBuffer->numberCount++;
+							} while (atoi(&userPress) > personBuffer->numberCount + 1 || atoi(&userPress) < 1);
+
 							printf("Enter the phone number: [Just enter removes the entry]: ");
 							gets(buffer);
 							if (buffer[0] == '\n')
-								strcpy(*personBuffer->phone_numbers, "");
+								strcpy(personBuffer->phone_numbers[atoi(&userPress) - 1], " ");
 							else
-								strcpy(*personBuffer->phone_numbers, buffer);
+								strcpy(personBuffer->phone_numbers[atoi(&userPress) - 1], buffer);
 							break;
 						case 3: //email
-							printf("Enter the email address: [Just enter removes the entry]: ");
+							do
+							{
+								printf("Enter the email ID index to be changed [Max %d]: ", personBuffer->emailCount + 1);
+								scanf("%s", &userPress);
+								while (getchar() != '\n')
+									;
+								if (atoi(&userPress) == personBuffer->emailCount + 1)
+									personBuffer->emailCount++;
+							} while (atoi(&userPress) > personBuffer->emailCount + 1 || atoi(&userPress) < 1);
+
+							printf("Enter the email ID: [Just enter removes the entry]: ");
 							gets(buffer);
 							if (buffer[0] == '\n')
-								strcpy(*personBuffer->email_addresses, "");
+								strcpy(personBuffer->email_addresses[atoi(&userPress) - 1], " ");
 							else
-								strcpy(*personBuffer->email_addresses, buffer);
+								strcpy(personBuffer->email_addresses[atoi(&userPress) - 1], buffer);
 							break;
 						case 0: //go back
 							return e_success;
