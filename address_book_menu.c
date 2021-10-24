@@ -437,7 +437,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 
 	/* Add the functionality for adding contacts here */
 	ContactInfo *personBuffer;
-
+	//switch based on the field you are looking for
 	switch (field)
 	{
 	//Print out serial number
@@ -455,8 +455,8 @@ Status search(const char *str, AddressBook *address_book, Field field)
 					printf(": %-35s", personBuffer->name[0]);
 					printf(": %-35s", personBuffer->phone_numbers[0]);
 					printf(": %-31s:\n", personBuffer->email_addresses[0]);
-					row++;
-
+					row++; //Do this for the next row
+					
 					while (row < 5)
 					{
 						printf(": %-7s", "");
@@ -475,7 +475,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 				}
 			}
 		}
-		break;
+		break; //break once all rows and columns have been found
 	//print out name search
 	case 1:
 		for (int i = 0; i < address_book->count; i++) //iterating through the rows
@@ -491,7 +491,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 					printf(": %-35s", personBuffer->name[0]);
 					printf(": %-35s", personBuffer->phone_numbers[0]);
 					printf(": %-31s:\n", personBuffer->email_addresses[0]);
-					row++;
+					row++; //print everything for next row
 
 					while (row < 5)
 					{
@@ -505,13 +505,13 @@ Status search(const char *str, AddressBook *address_book, Field field)
 							printf(": %-31s:\n", personBuffer->email_addresses[row]);
 						else
 							printf(": %-31s:\n", "");
-						row++;
+						row++; //print everything for next row
 					}
 					printf("=====================================================================================================================\n");
 				}
 			}
 		}
-		break;
+		break; //break once searched and print is complete
 	//Search through the phone numbers
 	case 2:
 		for (int i = 0; i < address_book->count; i++) //iterating through the rows
@@ -527,7 +527,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 					printf(": %-35s", personBuffer->name[0]);
 					printf(": %-35s", personBuffer->phone_numbers[0]);
 					printf(": %-31s:\n", personBuffer->email_addresses[0]);
-					row++;
+					row++; //print everything for next row
 
 					while (row < 5)
 					{
@@ -541,13 +541,13 @@ Status search(const char *str, AddressBook *address_book, Field field)
 							printf(": %-31s:\n", personBuffer->email_addresses[row]);
 						else
 							printf(": %-31s:\n", "");
-						row++;
+						row++; //print everything for next row
 					}
 					printf("=====================================================================================================================\n");
 				}
 			}
 		}
-		break;
+		break; //break once searched and print is complete
 	//Search by email address
 	case 3:
 		for (int i = 0; i < address_book->count; i++) //iterating through the rows
@@ -563,7 +563,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 					printf(": %-35s", personBuffer->name[0]);
 					printf(": %-35s", personBuffer->phone_numbers[0]);
 					printf(": %-31s:\n", personBuffer->email_addresses[0]);
-					row++;
+					row++; //break once searched and print is complete
 
 					while (row < 5)
 					{
@@ -577,18 +577,18 @@ Status search(const char *str, AddressBook *address_book, Field field)
 							printf(": %-31s:\n", personBuffer->email_addresses[row]);
 						else
 							printf(": %-31s:\n", "");
-						row++;
+						row++; //break once searched and print is complete
 					}
 					printf("=====================================================================================================================\n");
 				}
 			}
 		}
-		break;
+		break; //break once searched and print is complete
+	//If no case is used, use default
 	default:
 		break;
 	}
-
-	return e_success;
+	return e_success; //return back to main menu
 }
 
 Status search_contact(AddressBook *address_book)
@@ -609,22 +609,22 @@ Status search_contact(AddressBook *address_book)
 		case 1: //user can search for name
 			field = name;
 			printf("Enter the name: ");
-			gets(buffer);
+			gets(buffer); //get name input
 			break;
 		case 2: //user can search for phone number
 			field = number;
 			printf("Enter the phone number: ");
-			gets(buffer);
+			gets(buffer); //get number input
 			break;
 		case 3: //user can search for email
 			field = email;
 			printf("Enter the email address: ");
-			gets(buffer);
+			gets(buffer); //get email input
 			break;
 		case 4: //user can search for Serial Id
 			field = serial;
 			printf("Enter the serial number: ");
-			gets(buffer);
+			gets(buffer); //get serial input
 			break;
 		case 0: //exit
 			return e_success;
@@ -634,12 +634,12 @@ Status search_contact(AddressBook *address_book)
 		search(buffer, address_book, field);
 		printf("Press: [q] = Cancel: ");
 		scanf("%s", buffer);
-		if (strcmp(buffer, "q") == 0)
+		if (strcmp(buffer, "q") == 0) //if q break
 			break;
 
-	} while (option != 0);
-	//return back to the main menu
-	return e_success;
+	} while (option != 0); //continue to loop while the option is not 0
+	
+	return e_success; //return back to the main menu
 }
 
 Status edit_contact(AddressBook *address_book)
