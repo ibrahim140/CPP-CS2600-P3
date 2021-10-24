@@ -187,14 +187,17 @@ Status list_contacts(AddressBook *address_book)
 			int row = 0;
 			personBuffer = &address_book->list[i];
 			//format to print out the information
-			printf(": %-7d", personBuffer->si_no);
-			printf(": %-35s", personBuffer->name[0]);
-			printf(": %-35s", personBuffer->phone_numbers[0]);
-			printf(": %-31s:\n", personBuffer->email_addresses[0]);
+			printf(": %-7d", personBuffer->si_no);//prints SI number
+			printf(": %-35s", personBuffer->name[0]);//print name
+			printf(": %-35s", personBuffer->phone_numbers[0]);//print phone number
+			printf(": %-31s:\n", personBuffer->email_addresses[0]);//print email addresses
 			row++;
 
+			//determines which row the information will be printed in
 			while (row < 5)
 			{
+				//adds extra spaces to format the spacing correctly
+				//: is used for the sides to add a border
 				printf(": %-7s", "");
 				printf(": %-35s", "");
 				if (personBuffer->numberCount > row)
@@ -207,6 +210,7 @@ Status list_contacts(AddressBook *address_book)
 					printf(": %-31s:\n", "");
 				row++;
 			}
+			//closes off the block to distinguish from other contact information
 			printf("=====================================================================================================================\n");
 		}
 		
