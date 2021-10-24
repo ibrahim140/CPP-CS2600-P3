@@ -42,19 +42,43 @@ Status load_file(AddressBook *address_book)
 		{
 			if (indexColumn == 0)
 			{
-				personBuffer.si_no = atoi(stringTokenValue);
+				personBuffer.numberCount = atoi(stringTokenValue);
 			}
 			else if (indexColumn == 1)
 			{
-				strcpy(personBuffer.name[0], stringTokenValue);
+				personBuffer.emailCount = atoi(stringTokenValue);
 			}
 			else if (indexColumn == 2)
 			{
-				strcpy(personBuffer.phone_numbers[0], stringTokenValue);
+				personBuffer.si_no = atoi(stringTokenValue);
 			}
 			else if (indexColumn == 3)
 			{
-				strcpy(personBuffer.email_addresses[0], stringTokenValue);
+				strcpy(personBuffer.name[0], stringTokenValue);
+			}
+			else if (indexColumn == 4)
+			{
+				for (int i = 0; i < personBuffer.numberCount; i++)
+				{
+					if (stringTokenValue)
+					{
+						strcpy(personBuffer.phone_numbers[i], stringTokenValue);
+						if (i != personBuffer.numberCount - 1)
+							stringTokenValue = strtok(NULL, ",");
+					}
+				}
+			}
+			else if (indexColumn == 5)
+			{
+				for (int i = 0; i < personBuffer.emailCount; i++)
+				{
+					if (stringTokenValue)
+					{
+						strcpy(personBuffer.email_addresses[i], stringTokenValue);
+						if (i != personBuffer.emailCount - 1)
+							stringTokenValue = strtok(NULL, ",");
+					}
+				}
 			}
 			stringTokenValue = strtok(NULL, ",");
 			indexColumn++;
@@ -70,19 +94,26 @@ Status save_file(AddressBook *address_book)
 {
 	address_book->fp = fopen(DEFAULT_FILE, "w");
 
-	if(address_book->fp == NULL)
+	if (address_book->fp == NULL)
 	{
 		printf("Unable to open file.");
 		return e_fail;
 	}
 
 	for (int i = 0; i < address_book->count; i++)
-	{	
-			fprintf(address_book->fp, "%d,%s,%s,%s,\n",  address_book->list[i].si_no, address_book->list[i].name[0],
-					address_book->list[i].phone_numbers[0]/* [0] */, address_book->list[i].email_addresses[0]/* [0] */); 		// for phone and email, used 2D array.. 
+	{
+		fprintf(address_book->fp, "%d,%d,%d,%s,", address_book->list[i].numberCount, address_book->list[i].emailCount, address_book->list[i].si_no, address_book->list[i].name[0]);
+		for (int j = 0; j < address_book->list[i].numberCount; j++)
+		{
+			fprintf(address_book->fp, "%s,", address_book->list[i].phone_numbers[j]);
+		}
+		for (int j = 0; j < address_book->list[i].emailCount; j++)
+		{
+			fprintf(address_book->fp, "%s,", address_book->list[i].email_addresses[j]);
+		}
+		fprintf(address_book->fp, "\n");
 	}
 
 	fclose(address_book->fp);
-	
 	return e_success;
 }

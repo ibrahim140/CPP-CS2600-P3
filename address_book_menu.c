@@ -141,7 +141,7 @@ Status save_prompt(AddressBook *address_book)
 	return e_success;
 }
 
-Status list_contacts(AddressBook *address_book /* const char *title, int *index, const char *msg, Modes mode */)
+Status list_contacts(AddressBook *address_book)
 {
 	/* 
 	 * Add code to list all the contacts availabe in address_book.csv file
@@ -231,7 +231,7 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-	system("clear");
+	//system("clear");
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -355,8 +355,11 @@ Status add_contacts(AddressBook *address_book)
 {
 	/* Add the functionality for adding contacts here */
 	int option;
-	ContactInfo person = {"", "", "", 0};//takes contact information and adds to string
-	_Bool added = 0;//prevent infinite loop
+	ContactInfo person = {"", "", "", 0, 0, 0};//takes contact information and adds to string
+	_Bool addedName = 0; // flag for if name has been added
+	_Bool addedPhone = 0; // flag for if phone number has been added
+	_Bool addedEmail = 0; // flag for if email has been added
+	_Bool added = 0; // checks to see if anything has been added
 
 	do
 	{
@@ -371,24 +374,33 @@ Status add_contacts(AddressBook *address_book)
 		case 1: //name
 			printf("Please enter the name: ");
 			gets(*person.name);
+			addedName = 1;
 			added = 1;
 			break;
 		case 2: //phone number
 			printf("Please enter the phone number: ");
 			scanf("%s", *person.phone_numbers);
+			addedPhone = 1;
 			added = 1;
-			// person.numberCount++;
+			person.numberCount++;
 			break;
 		case 3: //email
 			printf("Please enter the email address: ");
 			scanf("%s", *person.email_addresses);
+			addedEmail = 1;
 			added = 1;
-			// person.emailCount++;
+			person.emailCount++;
 			break;
 		case 0: //exit
 			if (added)
 			{
 				person.si_no = address_book->count;
+				if(!addedName)
+					strcpy(person.name[0], " ");
+				if(!addedPhone)
+					strcpy(person.phone_numbers[0], " ");
+				if(!addedEmail)
+					strcpy(person.email_addresses[0], " ");
 				address_book->list[address_book->count++] = person;
 			}
 			break;
