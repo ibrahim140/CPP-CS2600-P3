@@ -122,24 +122,33 @@ int get_option(int type, const char *msg)
 	return NONE;
 }
 
+//saves the information to the address book
 Status save_prompt(AddressBook *address_book)
 {
-	char option;
+	/*
+	 * Save prompt will allow for the user to save information to address book
+	 * Uses a do while loop to ensure it is asked after main menu stops
+	 * All file information goes to the address book files
+	 */
+
+	char option;//used as varaible to obtain option from user to refer to in while loop later
 
 	do
 	{
 		main_menu();
 
+		//Obtains the option from the user to take that character
 		option = get_option(CHAR, "\rEnter 'N' to Ignore and 'Y' to Save: ");
 
-		if (option == 'Y' || option == 'y')
+		if (option == 'Y' || option == 'y')//Both uppercase and lowercase is used to confirm yes
 		{
+			//Saves information and confirms that where it is saved, then closes program
 			save_file(address_book);
 			printf("Exiting. Data saved in %s\n", DEFAULT_FILE);
 
 			break;
 		}
-	} while (option != 'N' || option == 'n');
+	} while (option != 'N' || option == 'n');//Both uppercase and lowercase is used to confirm no
 
 	return e_success;
 }
