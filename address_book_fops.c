@@ -116,6 +116,7 @@ Status load_file(AddressBook *address_book)
 
 	// close the file
 	fclose(address_book->fp);
+
 	// return e_success
 	return e_success;
 }

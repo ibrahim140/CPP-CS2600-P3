@@ -449,7 +449,12 @@ Status add_contacts(AddressBook *address_book)
 			case 0: //goes back to main menu
 				if (added)
 				{
-					person.si_no = address_book->count;
+					// find unique si number
+					person.si_no = 0;
+					for(int i = 0; i < address_book->count; i++)
+						if (address_book->list[i].si_no == person.si_no)
+							person.si_no++;
+
 					if (!addedName)
 						strcpy(person.name[0], " ");
 					if (!addedPhone)
