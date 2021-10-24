@@ -254,6 +254,7 @@ void main_menu(void)
 	printf("Please select an option: ");
 }
 
+//used to have a function when menu needs to be called again
 void add_menu(char *addName, char *addNumber, char *addEmail)
 {
 	menu_header("Add menu\n");
@@ -350,13 +351,15 @@ Status add_contacts(AddressBook *address_book)
 {
 	/* Add the functionality for adding contacts here */
 	int option;
-	ContactInfo person = {"", "", "", 0};
-	_Bool added = 0;
+	ContactInfo person = {"", "", "", 0};//takes contact information and adds to string
+	_Bool added = 0;//prevent infinite loop
 
 	do
 	{
+		//calls menu to be displayed with updated information of contact
 		add_menu(*person.name, *person.phone_numbers, *person.email_addresses);
 
+		//obtain user's option
 		option = get_submenu_option(NUM, "Please select an option: ");
 
 		switch (option)
