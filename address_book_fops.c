@@ -120,30 +120,33 @@ Status load_file(AddressBook *address_book)
 	return e_success;
 }
 
+//Function opens up the address book file and saves all the contact information changes to it
 Status save_file(AddressBook *address_book)
 {
-	address_book->fp = fopen(DEFAULT_FILE, "w");
+	address_book->fp = fopen(DEFAULT_FILE, "w");//opens up file
 
-	if (address_book->fp == NULL)
+	if (address_book->fp == NULL)//checks if the file is there
 	{
 		printf("Unable to open file.");
 		return e_fail;
 	}
 
+	//loops through to save information
 	for (int i = 0; i < address_book->count; i++)
 	{
+		//adds list of count for the phone numbers, emails, identification number, and names
 		fprintf(address_book->fp, "%d,%d,%d,%s,", address_book->list[i].numberCount, address_book->list[i].emailCount, address_book->list[i].si_no, address_book->list[i].name[0]);
 		for (int j = 0; j < address_book->list[i].numberCount; j++)
 		{
-			fprintf(address_book->fp, "%s,", address_book->list[i].phone_numbers[j]);
+			fprintf(address_book->fp, "%s,", address_book->list[i].phone_numbers[j]);//adds each phone number under that contact
 		}
 		for (int j = 0; j < address_book->list[i].emailCount; j++)
 		{
-			fprintf(address_book->fp, "%s,", address_book->list[i].email_addresses[j]);
+			fprintf(address_book->fp, "%s,", address_book->list[i].email_addresses[j]);//added each contact under that phone number
 		}
-		fprintf(address_book->fp, "\n");
+		fprintf(address_book->fp, "\n");//enters into new line
 	}
 
-	fclose(address_book->fp);
+	fclose(address_book->fp);//closes the file
 	return e_success;
 }
