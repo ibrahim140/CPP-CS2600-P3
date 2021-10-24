@@ -7,15 +7,15 @@
 
 #include "address_book.h"
 
-void printlist(AddressBook *address_book)
-{
-	printf("---PRINTING LIST---\n");
-	for (int i = 0; i < address_book->count; i++)
-	{
-		printf("%s,%s,%s\n", address_book->list[i].name[0], address_book->list[i].phone_numbers[0], address_book->list[i].email_addresses[0]);
-	}
-	printf("---FINISHED PRINTING---\n\n");
-}
+// void printlist(AddressBook *address_book)
+// {
+// 	printf("---PRINTING LIST---\n");
+// 	for (int i = 0; i < address_book->count; i++)
+// 	{
+// 		printf("%s,%s,%s\n", address_book->list[i].name[0], address_book->list[i].phone_numbers[0], address_book->list[i].email_addresses[0]);
+// 	}
+// 	printf("---FINISHED PRINTING---\n\n");
+// }
 
 Status load_file(AddressBook *address_book)
 {

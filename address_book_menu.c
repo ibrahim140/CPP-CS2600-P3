@@ -200,7 +200,7 @@ Status list_contacts(AddressBook *address_book)
 			}
 			printf("=====================================================================================================================\n");
 		}
-		
+
 		printf("0. Back\n");
 		printf("1. Next\n");
 		printf("2. Previous\n");
@@ -239,11 +239,11 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-#ifdef OS_Windows
-	system("cls");
-#else
-	system("clear");
-#endif
+	#ifdef OS_Windows
+		system("cls");
+	#else
+		system("clear");
+	#endif
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -268,14 +268,22 @@ void main_menu(void)
 }
 
 //used to have a function when menu needs to be called again
-void add_menu(char *addName, char *addNumber, char *addEmail)
+void add_menu(ContactInfo *personBuffer)
 {
 	menu_header("Add menu\n");
 
 	printf("0. Back\n");
-	printf("1. Name     : %s\n", addName);
-	printf("2. Phone No : %s\n", addNumber);
-	printf("3. Email ID : %s\n\n", addEmail);
+	printf("1. Name       : %s\n", personBuffer->name[0]);
+	printf("2. Phone No 1 : %s\n", personBuffer->phone_numbers[0]);
+	for (int j = 1; j < personBuffer->numberCount; j++)
+		printf("            %d : %s\n", j + 1, personBuffer->phone_numbers[j]);
+	printf("3. Email ID 1 : %s\n", personBuffer->email_addresses[0]);
+	for (int j = 1; j < personBuffer->emailCount; j++)
+		printf("            %d : %s\n", j + 1, personBuffer->email_addresses[j]);
+	// printf("0. Back\n");
+	// printf("1. Name     : %s\n", addName);
+	// printf("2. Phone No : %s\n", addNumber);
+	// printf("3. Email ID : %s\n\n", addEmail);
 }
 
 // function to print search menu
@@ -366,9 +374,11 @@ Status menu(AddressBook *address_book)
 
 Status add_contacts(AddressBook *address_book)
 {
-	/* Add the functionality for adding contacts here */
+	// Declare variables
 	int option;
-	ContactInfo person = {"", "", "", 0, 0, 0}; //takes contact information and adds to string
+	int userPress;
+	char *buffer;
+	ContactInfo person = {"", "", "", 0, 0, 0}; // takes contact information and adds to string
 	_Bool addedName = 0;						// flag for if name has been added
 	_Bool addedPhone = 0;						// flag for if phone number has been added
 	_Bool addedEmail = 0;						// flag for if email has been added
@@ -377,46 +387,62 @@ Status add_contacts(AddressBook *address_book)
 	do
 	{
 		//calls menu to be displayed with updated information of contact
-		add_menu(*person.name, *person.phone_numbers, *person.email_addresses);
+		add_menu(&person);
 
 		//obtain user's option
 		option = get_submenu_option(NUM, "Please select an option: ");
 
 		switch (option)
 		{
-		case 1: //user adds contact name
-			printf("Please enter the name: ");
-			gets(*person.name);
-			addedName = 1;
-			added = 1;
-			break;
-		case 2: //user adds contact phone number
-			printf("Please enter the phone number: ");
-			scanf("%s", *person.phone_numbers);
-			addedPhone = 1;
-			added = 1;
-			person.numberCount++;
-			break;
-		case 3: //user adds contact email
-			printf("Please enter the email address: ");
-			scanf("%s", *person.email_addresses);
-			addedEmail = 1;
-			added = 1;
-			person.emailCount++;
-			break;
-		case 0: //goes back to main menu
-			if (added)
-			{
-				person.si_no = address_book->count;
-				if (!addedName)
-					strcpy(person.name[0], " ");
-				if (!addedPhone)
-					strcpy(person.phone_numbers[0], " ");
-				if (!addedEmail)
-					strcpy(person.email_addresses[0], " ");
-				address_book->list[address_book->count++] = person;
-			}
-			break;
+			case 1: //user adds contact name
+				printf("Please enter the name: ");
+				gets(*person.name);
+				addedName = 1;
+				added = 1;
+				break;
+			case 2: //user adds contact phone number
+				do
+				{
+					printf("Enter the phone number index to be added [Max %d]: ", person.numberCount + 1);
+					scanf("%d", &userPress);
+					if (userPress == person.numberCount + 1)
+						person.numberCount++;
+				} while (userPress > person.numberCount + 1 || userPress < 1);
+
+				printf("Please enter the phone number: ");
+				scanf("%s", person.phone_numbers[userPress - 1]);
+
+				addedPhone = 1;
+				added = 1;
+				break;
+			case 3: //user adds contact email
+				do
+				{
+					printf("Enter the email ID index to be added [Max %d]: ", person.emailCount + 1);
+					scanf("%d", &userPress);
+					if (userPress == person.emailCount + 1)
+						person.emailCount++;
+				} while (userPress > person.emailCount + 1 || userPress < 1);
+
+				printf("Please enter the email ID: ");
+				scanf("%s", person.email_addresses[userPress - 1]);
+
+				addedEmail = 1;
+				added = 1;
+				break;
+			case 0: //goes back to main menu
+				if (added)
+				{
+					person.si_no = address_book->count;
+					if (!addedName)
+						strcpy(person.name[0], " ");
+					if (!addedPhone)
+						strcpy(person.phone_numbers[0], " ");
+					if (!addedEmail)
+						strcpy(person.email_addresses[0], " ");
+					address_book->list[address_book->count++] = person;
+				}
+				break;
 		}
 	} while (option != 0);
 
@@ -447,7 +473,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 			int row = 0;
 			ContactInfo *personBuffer = &address_book->list[i];
 
-			for (int count = 0; count < 1; count++) //iterating throught the columns 
+			for (int count = 0; count < 1; count++) //iterating throught the columns
 			{
 				if (personBuffer->si_no == atoi(str)) //print return information when found
 				{
@@ -483,7 +509,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 			int row = 0;
 			ContactInfo *personBuffer = &address_book->list[i];
 
-			for (int count = 0; count < 1; count++)//iterating throught the columns 
+			for (int count = 0; count < 1; count++) //iterating throught the columns
 			{
 				if (strcasecmp(personBuffer->name[count], str) == 0) //print return information when found
 				{
@@ -519,9 +545,9 @@ Status search(const char *str, AddressBook *address_book, Field field)
 			int row = 0;
 			ContactInfo *personBuffer = &address_book->list[i];
 
-			for (int count = 0; count < personBuffer->numberCount; count++)//iterating throught the columns
+			for (int count = 0; count < personBuffer->numberCount; count++) //iterating throught the columns
 			{
-				if (strcasecmp(personBuffer->phone_numbers[count], str) == 0)//print when number has been found
+				if (strcasecmp(personBuffer->phone_numbers[count], str) == 0) //print when number has been found
 				{
 					printf(": %-7d", personBuffer->si_no);
 					printf(": %-35s", personBuffer->name[0]);
@@ -555,9 +581,9 @@ Status search(const char *str, AddressBook *address_book, Field field)
 			int row = 0;
 			ContactInfo *personBuffer = &address_book->list[i];
 
-			for (int count = 0; count < personBuffer->emailCount; count++)//iterating throught the columns
+			for (int count = 0; count < personBuffer->emailCount; count++) //iterating throught the columns
 			{
-				if (strcasecmp(personBuffer->email_addresses[count], str) == 0)//print when email has been found
+				if (strcasecmp(personBuffer->email_addresses[count], str) == 0) //print when email has been found
 				{
 					printf(": %-7d", personBuffer->si_no);
 					printf(": %-35s", personBuffer->name[0]);
