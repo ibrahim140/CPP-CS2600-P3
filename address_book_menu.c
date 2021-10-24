@@ -11,42 +11,47 @@
 
 int get_submenu_option(int type, const char *msg)
 {
+	// check if type is NUM
 	if (type == NUM)
 	{
 		while (1)
 		{
 			int userNumInput;
 
-			printf("%s", msg);
-			scanf("%d", &userNumInput);
-			while (getchar() != '\n')
-				;
+			printf("%s", msg); // prompt user for input
+			scanf("%d", &userNumInput); // take input from user
+			while (getchar() != '\n');
 
-			if ((userNumInput >= 0) && (userNumInput <= 4)) //for menu options/features
+			if ((userNumInput >= 0) && (userNumInput <= 4)) // limit submenu options from 0 to 4
 			{
+				// return user input
 				return userNumInput;
 			}
 			else
 			{
+				// notice of invalid input
 				printf("Please enter a valid option.\n");
 			}
 		}
 	}
+	// check if type is CHAR
 	else if (type == CHAR)
 	{
 		while (1)
 		{
 			char userCharInput;
 
-			printf("%s", msg);
-			scanf("%c", &userCharInput);
+			printf("%s", msg); // prompt user for input
+			scanf("%c", &userCharInput); // take input from user
 
 			if (userCharInput == 'Y' || userCharInput == 'y')
 			{
+				// return y
 				return 'Y';
 			}
 			else
 			{
+				// return e_fail for any input besides 'y'
 				return e_fail;
 			}
 		}
@@ -65,18 +70,18 @@ int get_option(int type, const char *msg)
 	 */
 
 	/* Fill the code to add above functionality */
+	// check if type is CHAR
 	if (type == CHAR)
 	{
 		while (1)
 		{
 			char userCharInput;
 
-			printf("%s", msg);
-			scanf("%c", &userCharInput);
-			while (getchar() != '\n')
-				;
-			//fflush(stdout);
-
+			printf("%s", msg); // prompt user for input
+			scanf("%c", &userCharInput); // take input from user
+			while (getchar() != '\n');
+			
+			// validate user input to y or n
 			if (userCharInput == 'Y' || userCharInput == 'y')
 			{
 				return 'Y';
@@ -85,30 +90,27 @@ int get_option(int type, const char *msg)
 			{
 				return 'N';
 			}
-			// else
-			// {
-			// 	printf("Please enter 'Y' for yes or 'N' for no.\n%s", msg);
-			// }
 			fflush(stdout);
 		}
 	}
+	// check if type is NUM
 	else if (type == NUM)
 	{
 		while (1)
 		{
 			int userNumInput;
 
-			printf("%s", msg);
-			scanf("%d", &userNumInput);
-			while (getchar() != '\n')
-				;
-			//fflush(stdout);
-			if ((userNumInput >= 0) && (userNumInput <= 6)) //for menu options/features
+			printf("%s", msg); // prompt user for input
+			scanf("%d", &userNumInput); // take input from user
+			while (getchar() != '\n');
+			if ((userNumInput >= 0) && (userNumInput <= 6)) //for main menu, options limited from 0 to 6
 			{
+				// return users input
 				return userNumInput;
 			}
 			else
 			{
+				// notice of invalid input
 				printf("Please enter a valid option.\n");
 			}
 		}
@@ -154,6 +156,7 @@ Status list_contacts(AddressBook *address_book /* const char *title, int *index,
 
 	while (1)
 	{
+		// format the output
 		menu_header("Search Result: \n");
 		printf("=====================================================================================================================\n");
 		printf(": %-7s", "S.No");
@@ -162,17 +165,17 @@ Status list_contacts(AddressBook *address_book /* const char *title, int *index,
 		printf(": %-31s:\n", "Email ID");
 		printf("=====================================================================================================================\n");
 
-		/* Add the functionality for adding contacts here */
+		// create a buffer to hold the contacts info
 		ContactInfo *personBuffer;
 
-		for (int i = pageStart; i < pageCount + pageStart; i++) //iterating through the rows
+		for (int i = pageStart; i < pageCount + pageStart; i++)
 		{
 			// break if there are no more contacts to be printed 
 			if (i == address_book->count)
 				break;
 
 			int row = 0;
-			ContactInfo *personBuffer = &address_book->list[i];
+			personBuffer = &address_book->list[i];
 
 			for (int count = 0; count < 1; count++)
 			{
@@ -265,6 +268,7 @@ void add_menu(char *addName, char *addNumber, char *addEmail)
 	printf("3. Email ID : %s\n\n", addEmail);
 }
 
+// function to print search menu
 void search_menu()
 {
 	menu_header("Search Contact by: \n");
@@ -276,6 +280,7 @@ void search_menu()
 	printf("4. Serial No\n\n");
 }
 
+// function to print edit menu
 void edit_menu()
 {
 	menu_header("Search Contact to Edit by: \n");
@@ -287,6 +292,7 @@ void edit_menu()
 	printf("4. Serial No\n\n");
 }
 
+// function to print delete menu
 void delete_menu()
 {
 	menu_header("Search Contact to Delete by: \n");
@@ -586,7 +592,7 @@ Status search_contact(AddressBook *address_book)
 Status edit_contact(AddressBook *address_book)
 {
 	/* Add the functionality for editing contacts here */
-	int option1;
+	int option;
 	char buffer[NAME_LEN];
 	Field field;
 	char userPress;
@@ -595,9 +601,9 @@ Status edit_contact(AddressBook *address_book)
 	{
 		// Display search menu and get option from user
 		edit_menu();
-		option1 = get_submenu_option(NUM, "Please select an option: ");
+		option = get_submenu_option(NUM, "Please select an option: ");
 
-		switch (option1)
+		switch (option)
 		{
 		case 1: //name
 			field = name;
@@ -680,7 +686,7 @@ Status edit_contact(AddressBook *address_book)
 			}
 		}
 
-	} while (option1 != 0);
+	} while (option != 0);
 
 	return e_success;
 }
@@ -690,10 +696,12 @@ Status delete_contact(AddressBook *address_book)
 	/* Add the functionality for deleting contacts here */
 	if (address_book == NULL)
 	{
+		// notify user the address book is empty
 		printf("The address book is empty. Use Add Contact to add contacts.\n");
 		return e_fail;
 	}
-
+	
+	// declare local variables
 	int option;
 	char buffer[NAME_LEN];
 	Field field;
@@ -703,47 +711,46 @@ Status delete_contact(AddressBook *address_book)
 	{
 		// Display search menu and get option from user
 		delete_menu();
+		// get user option for delete menu
 		option = get_submenu_option(NUM, "Please select an option: ");
 
 		switch (option)
 		{
-		case 1: //name
-			field = name;
-			printf("Enter the name: ");
-			gets(buffer);
-			break;
-		case 2: //phone number
-			field = number;
-			printf("Enter the phone number: ");
-			gets(buffer);
-			break;
-		case 3: //email
-			field = email;
-			printf("Enter the email address: ");
-			gets(buffer);
-			break;
-		case 4: //email
-			field = serial;
-			printf("Enter the serial number: ");
-			gets(buffer);
-			break;
-		case 0: //exits
-			return e_success;
+			case 1: //name
+				field = name;
+				printf("Enter the name: ");
+				gets(buffer);
+				break;
+			case 2: //phone number
+				field = number;
+				printf("Enter the phone number: ");
+				gets(buffer);
+				break;
+			case 3: //email
+				field = email;
+				printf("Enter the email address: ");
+				gets(buffer);
+				break;
+			case 4: //email
+				field = serial;
+				printf("Enter the serial number: ");
+				gets(buffer);
+				break;
+			case 0: //exits
+				return e_success;
 		}
 
 		// Search for element that the buffer contains
 		search(buffer, address_book, field);
-		printf("Press: [s] = Select, [q] = Cancel: ");
-		scanf("%s", &userPress);
-		while (getchar() != '\n')
-			;
+		printf("Press: [s] = Select, [q] = Cancel: "); // prompt user for an input
+		scanf("%s", &userPress); // get user input
+		while (getchar() != '\n'); // clear standard input (to no get the '\n' character)
 
 		if (userPress == 's' || userPress == 'S')
 		{
-			printf("Select a Serial Number (S.No) to Delete: ");
-			scanf("%s", &userPress);
-			while (getchar() != '\n')
-				;
+			printf("Select a Serial Number (S.No) to Delete: "); //prompt user for serial # input
+			scanf("%s", &userPress); // get user input
+			while (getchar() != '\n');
 
 			int i;
 			for (i = 0; i < address_book->count; i++) //iterating through the rows
@@ -753,6 +760,7 @@ Status delete_contact(AddressBook *address_book)
 				{
 					// for(int j = 0; j < 5; j++)
 					// {
+					// print the info of the contact to be deleted
 					menu_header("Delete Contact:\n");
 					printf("0. Back\n");
 					printf("1. Name     : %s\n", personBuffer->name[0]);
@@ -762,20 +770,27 @@ Status delete_contact(AddressBook *address_book)
 					// }
 				}
 			}
+			// get user input for deleting contact 
 			char userInput2 = get_submenu_option(CHAR, "\nEnter 'Y' to delete. [Press any key to ignore]: ");
 
+			// confirm if user wants to delete contact
 			if (userInput2 == 'y' || userInput2 == 'Y')
 			{
-				// // move the contact at index i to the end of the list and decrement
-				// // the address book counter to remove access to that contact from the list
+				// declare local tepm contacts
 				ContactInfo tempContact1, tempContact2;
 
+				// assign the contact at index 'i' to tempContact1
 				tempContact1 = address_book->list[i];
+				// assign the contact at the end of the list to tempContact2
 				tempContact2 = address_book->list[address_book->count - 1];
 
+				// move contact at index 'i' to the end of the list
 				address_book->list[address_book->count - 1] = tempContact1;
+				// move contact previosly at the end of the list to index 'i'
 				address_book->list[i] = tempContact2;
+				// decrement the count of the address book
 				address_book->count--;
+				// inform user of contact deletion
 				printf("Contact has been deleted.\n\n");
 			}
 		}
