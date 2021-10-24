@@ -417,15 +417,15 @@ Status add_contacts(AddressBook *address_book)
 			added = 1;
 			break;
 		case 2: //user adds contact phone number
-			do
+			do //do while loop allows to add multiple phone numbers
 			{
 				printf("Enter the phone number index to be added [Max %d]: ", person.numberCount + 1);
-				scanf("%d", &userPress);
+				scanf("%d", &userPress); //scan user input
 				if (userPress == person.numberCount + 1)
 					person.numberCount++;
 			} while (userPress > person.numberCount + 1 || userPress < 1);
 
-			do
+			do //adding the phone number
 			{
 				printf("Please enter the phone number: ");
 				scanf("%s", buffer);
@@ -436,7 +436,7 @@ Status add_contacts(AddressBook *address_book)
 			added = 1;
 			break;
 		case 3: //user adds contact email
-			do
+			do //do while loop allows to add multiple emails
 			{
 				printf("Enter the email ID index to be added [Max %d]: ", person.emailCount + 1);
 				scanf("%d", &userPress);
@@ -444,7 +444,7 @@ Status add_contacts(AddressBook *address_book)
 					person.emailCount++;
 			} while (userPress > person.emailCount + 1 || userPress < 1);
 
-			do
+			do //adds the id of the emails
 			{
 				printf("Please enter the email ID: ");
 				scanf("%s", buffer);
@@ -463,11 +463,11 @@ Status add_contacts(AddressBook *address_book)
 					if (address_book->list[i].si_no == person.si_no)
 						person.si_no++;
 
-				if (!addedName)
+				if (!addedName) //check if there is name
 					strcpy(person.name[0], " ");
-				if (!addedPhone)
+				if (!addedPhone) //check if there is phone
 					strcpy(person.phone_numbers[0], " ");
-				if (!addedEmail)
+				if (!addedEmail) //check if there is email
 					strcpy(person.email_addresses[0], " ");
 				address_book->list[address_book->count++] = person;
 			}
