@@ -80,8 +80,7 @@ int get_option(int type, const char *msg)
 
 			printf("%s", msg);			 // prompt user for input
 			scanf("%c", &userCharInput); // take input from user
-			while (getchar() != '\n')
-				;
+			while (getchar() != '\n');
 
 			// validate user input to y or n
 			if (userCharInput == 'Y' || userCharInput == 'y')
@@ -645,10 +644,10 @@ Status search_contact(AddressBook *address_book)
 Status edit_contact(AddressBook *address_book)
 {
 	/* Add the functionality for editing contacts here */
-	int option;
-	char buffer[NAME_LEN];
-	Field field;
-	char userPress;
+	int option; 				// variable for menu/submenu option
+	char buffer[NAME_LEN];  // char array for name, number, email, s.no
+	Field field; 				// struct that holds enum name, number, email, s.no
+	char userPress; 			// variable for user to enter s or q
 
 	do
 	{
@@ -659,23 +658,35 @@ Status edit_contact(AddressBook *address_book)
 		switch (option)
 		{
 		case 1: //user edits contact name
+			// set enum type to name
 			field = name;
+			// ask user to enter name
 			printf("Enter the name: ");
-			gets(buffer);
+			// get user input for name; includes any spaces
+			gets(buffer); 
 			break;
 		case 2: //user edits contact phone number
+			// set enum type to phone number
 			field = number;
+			// ask user to enter phone number
 			printf("Enter the phone number: ");
+			// get user input for phone number
 			scanf("%s", buffer);
 			break;
 		case 3: //user edits contact email
+			// set enum type to email address
 			field = email;
+			// ask user to enter email address
 			printf("Enter the email address: ");
+			// get user input for email
 			scanf("%s", buffer);
 			break;
-		case 4: //user edits contact email
+		case 4: //user edits contact serial number
+			// set enum type to serial number
 			field = serial;
+			// ask user to enter serial number
 			printf("Enter the serial number: ");
+			// get user input for serial number
 			scanf("%s", buffer);
 			break;
 		case 0: //exit
@@ -684,89 +695,124 @@ Status edit_contact(AddressBook *address_book)
 
 		// Search for element that the buffer contains
 		search(buffer, address_book, field);
+		// prompt user to select contact or go back to edit menu
 		printf("Press: [s] = Select, [q] = Cancel: ");
 		scanf("%s", &userPress);
 
+		// case sensitivity; user enters S or s
 		if (userPress == 's' || userPress == 'S')
 		{
+			// prompt user to enter specific serial number to edit
 			printf("Select a Serial Number (S.No) to Edit: ");
 			scanf("%s", &userPress);
 
-			for (int i = 0; i < address_book->count; i++) //iterating through the rows
+			for (int i = 0; i < address_book->count; i++) //iterating through the rows of address book
 			{
+				// create ContactInfo type to point to specific contact
 				ContactInfo *personBuffer = &address_book->list[i];
+				// does serial number that user entered match serial number from address book?
 				if (personBuffer->si_no == atoi(&userPress))
 				{
+					// if serial number matches,
 					do
 					{
+						// display menu to edit contact
 						menu_header("Edit Contact:\n");
+						// option to go back to main menu
 						printf("0. Back\n");
+						// prints name of contact
 						printf("1. Name       : %s\n", personBuffer->name[0]);
+						// prints phone number of contact
 						printf("2. Phone No 1 : %s\n", personBuffer->phone_numbers[0]);
+						// if more than one phone number, print the rest
 						for (int j = 1; j < personBuffer->numberCount; j++)
 							printf("            %d : %s\n", j + 1, personBuffer->phone_numbers[j]);
+						// prints email address of contact
 						printf("3. Email ID 1 : %s\n", personBuffer->email_addresses[0]);
+						// if more than one email, print the rest
 						for (int j = 1; j < personBuffer->emailCount; j++)
 							printf("            %d : %s\n", j + 1, personBuffer->email_addresses[j]);
 
+						// prompt user to select from edit contact menu
 						userPress = get_submenu_option(NUM, "\nPlease select an option: ");
 
+						// given their choice from edit contact menu,
 						switch (userPress)
 						{
 						case 1: //name
 							printf("Enter the name: [Just enter removes the entry]: ");
+							// prompt user to enter name to change to
 							gets(buffer);
-							if (buffer[0] == '\n') // did user enter only?
+							// did user enter only?
+							if (buffer[0] == '\n')
+								// if so, set name to empty string; "removes" entry
 								strcpy(*personBuffer->name, " ");
 							else
+								// otherwise, set name to name that user entered
 								strcpy(*personBuffer->name, buffer);
 							break;
 						case 2: //phone number
+							// while user continues to enter more phone numbers OR invalid index,
 							do
 							{
+								// prompt user to enter index for phone number to change
 								printf("Enter the phone number index to be changed [Max %d]: ", personBuffer->numberCount + 1);
 								scanf("%s", &userPress);
-								while (getchar() != '\n')
-									;
+								// remove any unwanted characters
+								while (getchar() != '\n');
+								// if user wants to edit index greater than how many there currently are,
 								if (atoi(&userPress) == personBuffer->numberCount + 1)
+									// increase count of phone numbers
 									personBuffer->numberCount++;
 							} while (atoi(&userPress) > personBuffer->numberCount + 1 || atoi(&userPress) < 1);
 
+							// prompt the user to enter phone number to change to
 							printf("Enter the phone number: [Just enter removes the entry]: ");
 							gets(buffer);
+							// did user enter only?
 							if (buffer[0] == '\n')
+								// if so, set phone number to empty string; "removes" entry
 								strcpy(personBuffer->phone_numbers[atoi(&userPress) - 1], " ");
 							else
+								// otherwise, set phone number to phone number that user entered
 								strcpy(personBuffer->phone_numbers[atoi(&userPress) - 1], buffer);
 							break;
 						case 3: //email
+							// while user continues to enter more email addresses OR invalid index
 							do
 							{
+								// prompt user to enter index for email address to change
 								printf("Enter the email ID index to be changed [Max %d]: ", personBuffer->emailCount + 1);
 								scanf("%s", &userPress);
-								while (getchar() != '\n')
-									;
+								// remove any unwanted characters
+								while (getchar() != '\n');
+								// if user wants to edit index greater than how many there currently are,
 								if (atoi(&userPress) == personBuffer->emailCount + 1)
+									// increase count of email addresses
 									personBuffer->emailCount++;
 							} while (atoi(&userPress) > personBuffer->emailCount + 1 || atoi(&userPress) < 1);
 
+							// prompt the user to enter email address to change
 							printf("Enter the email ID: [Just enter removes the entry]: ");
 							gets(buffer);
+							// did user enter only?
 							if (buffer[0] == '\n')
+								// if so, set email address to empty string; "removes" entry
 								strcpy(personBuffer->email_addresses[atoi(&userPress) - 1], " ");
 							else
+								// otherwise, set email address to email address that user entered
 								strcpy(personBuffer->email_addresses[atoi(&userPress) - 1], buffer);
 							break;
-						case 0: //go back
+						case 0: //go back to main menu
 							return e_success;
 						}
 					} while (userPress != 0);
 				}
 			}
 		}
-
 	} while (option != 0);
 
+	// return e_success once edit_contact is finished
 	return e_success;
 }
 
