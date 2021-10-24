@@ -28,6 +28,14 @@ typedef int bool_t;
 
 typedef enum 
 {
+	serial,
+	name,
+	number,
+	email,
+} Field;
+
+typedef enum 
+{
 	e_add,
 	e_search,
 	e_edit,

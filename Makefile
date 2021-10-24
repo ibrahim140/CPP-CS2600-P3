@@ -2,4 +2,4 @@
 #then it runs the command to compile an executable program
 
 addBook: address_book_fops.c address_book_menu.c main.c
-	gcc -o a.exe address_book_fops.c address_book_menu.c main.c
+	gcc -o main address_book_fops.c address_book_menu.c main.c
