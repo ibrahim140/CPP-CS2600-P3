@@ -483,7 +483,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 
 			for (int count = 0; count < 1; count++)
 			{
-				if (strcasecmp(personBuffer->name[count], str) == 0) 
+				if (strcasecmp(personBuffer->name[count], str) == 0)
 				{
 					printf(": %-7d", personBuffer->si_no);
 					printf(": %-35s", personBuffer->name[0]);
@@ -811,16 +811,17 @@ Status delete_contact(AddressBook *address_book)
 				ContactInfo *personBuffer = &address_book->list[i];
 				if (personBuffer->si_no == atoi(&userPress))
 				{
-					// for(int j = 0; j < 5; j++)
-					// {
 					// print the info of the contact to be deleted
 					menu_header("Delete Contact:\n");
 					printf("0. Back\n");
-					printf("1. Name     : %s\n", personBuffer->name[0]);
-					printf("2. Phone No : %s\n", personBuffer->phone_numbers[0] /* [j] */);
-					printf("3. Email ID : %s\n", personBuffer->email_addresses[0] /* [j] */);
+					printf("1. Name       : %s\n", personBuffer->name[0]);
+					printf("2. Phone No 1 : %s\n", personBuffer->phone_numbers[0]);
+					for (int j = 1; j < personBuffer->numberCount; j++)
+						printf("            %d : %s\n", j + 1, personBuffer->phone_numbers[j]);
+					printf("3. Email ID 1 : %s\n", personBuffer->email_addresses[0]);
+					for (int j = 1; j < personBuffer->emailCount; j++)
+						printf("            %d : %s\n", j + 1, personBuffer->email_addresses[j]);
 					break;
-					// }
 				}
 			}
 			// get user input for deleting contact
