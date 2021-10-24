@@ -20,7 +20,8 @@ int get_submenu_option(int type, const char *msg)
 
 			printf("%s", msg);			// prompt user for input
 			scanf("%d", &userNumInput); // take input from user
-			while (getchar() != '\n'); // clear standard input
+			while (getchar() != '\n')
+				; // clear standard input
 
 			if ((userNumInput >= 0) && (userNumInput <= 4)) // limit submenu options from 0 to 4
 			{
@@ -76,11 +77,12 @@ int get_option(int type, const char *msg)
 	{
 		while (1) // infinite loop
 		{
-			char userCharInput;  // local variable for user input
+			char userCharInput; // local variable for user input
 
 			printf("%s", msg);			 // prompt user for input
 			scanf("%c", &userCharInput); // take input from user
-			while (getchar() != '\n'); // clear standard input
+			while (getchar() != '\n')
+				; // clear standard input
 
 			// validate user input to Y
 			if (userCharInput == 'Y' || userCharInput == 'y')
@@ -101,11 +103,12 @@ int get_option(int type, const char *msg)
 	{
 		while (1) // infinite loop
 		{
-			int userNumInput;  // local variable for user input
+			int userNumInput; // local variable for user input
 
 			printf("%s", msg);			// prompt user for input
 			scanf("%d", &userNumInput); // take input from user
-			while (getchar() != '\n'); // clear standard input
+			while (getchar() != '\n')
+				;											// clear standard input
 			if ((userNumInput >= 0) && (userNumInput <= 6)) //for main menu, options limited from 0 to 6
 			{
 				// return users input
@@ -131,7 +134,7 @@ Status save_prompt(AddressBook *address_book)
 	 * All file information goes to the address book files
 	 */
 
-	char option;//used as varaible to obtain option from user to refer to in while loop later
+	char option; //used as varaible to obtain option from user to refer to in while loop later
 
 	do
 	{
@@ -140,7 +143,7 @@ Status save_prompt(AddressBook *address_book)
 		//Obtains the option from the user to take that character
 		option = get_option(CHAR, "\rEnter 'N' to Ignore and 'Y' to Save: ");
 
-		if (option == 'Y' || option == 'y')//Both uppercase and lowercase is used to confirm yes
+		if (option == 'Y' || option == 'y') //Both uppercase and lowercase is used to confirm yes
 		{
 			//Saves information and confirms that where it is saved, then closes program
 			save_file(address_book);
@@ -148,7 +151,7 @@ Status save_prompt(AddressBook *address_book)
 
 			break;
 		}
-	} while (option != 'N' || option == 'n');//Both uppercase and lowercase is used to confirm no
+	} while (option != 'N' || option == 'n'); //Both uppercase and lowercase is used to confirm no
 
 	return e_success;
 }
@@ -188,10 +191,10 @@ Status list_contacts(AddressBook *address_book)
 			int row = 0;
 			personBuffer = &address_book->list[i];
 			//format to print out the information
-			printf(": %-7d", personBuffer->si_no);//prints SI number
-			printf(": %-35s", personBuffer->name[0]);//print name
-			printf(": %-35s", personBuffer->phone_numbers[0]);//print phone number
-			printf(": %-31s:\n", personBuffer->email_addresses[0]);//print email addresses
+			printf(": %-7d", personBuffer->si_no);					//prints SI number
+			printf(": %-35s", personBuffer->name[0]);				//print name
+			printf(": %-35s", personBuffer->phone_numbers[0]);		//print phone number
+			printf(": %-31s:\n", personBuffer->email_addresses[0]); //print email addresses
 			row++;
 
 			//determines which row the information will be printed in
@@ -214,27 +217,27 @@ Status list_contacts(AddressBook *address_book)
 			//closes off the block to distinguish from other contact information
 			printf("=====================================================================================================================\n");
 		}
-		
+
 		//shows menu to flip through different pages
 		printf("0. Back\n");
 		printf("1. Next\n");
 		printf("2. Previous\n");
 		printf("\nPlease enter an Option: ");
 
-		scanf("%d", &buffer);//takes input
-		printf("%d", buffer);//shows off input
+		scanf("%d", &buffer); //takes input
+		printf("%d", buffer); //shows off input
 
 		//switch statement to flip to different pages
 		switch (buffer)
 		{
-		case 0://returns back to the menu
+		case 0: //returns back to the menu
 			return e_success;
-		case 1://goes to the next page in the for loop
+		case 1: //goes to the next page in the for loop
 			pageStart += pageCount;
 			if (pageStart >= address_book->count)
 				pageStart = 0;
 			break;
-		case 2://goes back to previous pages in the contacts
+		case 2: //goes back to previous pages in the contacts
 			if (pageStart == 0)
 			{
 				if (address_book->count % 2 != 0)
@@ -255,11 +258,11 @@ void menu_header(const char *str)
 {
 	fflush(stdout);
 
-	#ifdef OS_Windows
-		system("cls");
-	#else
-		system("clear");
-	#endif
+#ifdef OS_Windows
+	system("cls");
+#else
+	system("clear");
+#endif
 
 	printf("#######  Address Book  #######\n");
 	if (*str != '\0')
@@ -393,8 +396,8 @@ Status add_contacts(AddressBook *address_book)
 	// Declare variables
 	int option;
 	int userPress;
-	char *buffer;
-	ContactInfo person = {"", "", "", 0, 0, 0}; // takes contact information and adds to string
+	char buffer[1024];
+	ContactInfo person = {" ", " ", " ", 0, 0, 0}; // takes contact information and adds to string
 	_Bool addedName = 0;						// flag for if name has been added
 	_Bool addedPhone = 0;						// flag for if phone number has been added
 	_Bool addedEmail = 0;						// flag for if email has been added
@@ -410,60 +413,72 @@ Status add_contacts(AddressBook *address_book)
 
 		switch (option)
 		{
-			case 1: //user adds contact name
+		case 1: //user adds contact name
+			do
+			{
 				printf("Please enter the name: ");
-				gets(*person.name);
-				addedName = 1;
-				added = 1;
-				break;
-			case 2: //user adds contact phone number
-				do
-				{
-					printf("Enter the phone number index to be added [Max %d]: ", person.numberCount + 1);
-					scanf("%d", &userPress);
-					if (userPress == person.numberCount + 1)
-						person.numberCount++;
-				} while (userPress > person.numberCount + 1 || userPress < 1);
+				gets(buffer);
+			} while (strlen(buffer) > NAME_LEN);
+			strcpy(person.name[0], buffer);
+			addedName = 1;
+			added = 1;
+			break;
+		case 2: //user adds contact phone number
+			do
+			{
+				printf("Enter the phone number index to be added [Max %d]: ", person.numberCount + 1);
+				scanf("%d", &userPress);
+				if (userPress == person.numberCount + 1)
+					person.numberCount++;
+			} while (userPress > person.numberCount + 1 || userPress < 1);
 
+			do
+			{
 				printf("Please enter the phone number: ");
-				scanf("%s", person.phone_numbers[userPress - 1]);
+				scanf("%s", buffer);
+			} while (strlen(buffer) > NUMBER_LEN);
+			strcpy(person.phone_numbers[userPress - 1], buffer);
 
-				addedPhone = 1;
-				added = 1;
-				break;
-			case 3: //user adds contact email
-				do
-				{
-					printf("Enter the email ID index to be added [Max %d]: ", person.emailCount + 1);
-					scanf("%d", &userPress);
-					if (userPress == person.emailCount + 1)
-						person.emailCount++;
-				} while (userPress > person.emailCount + 1 || userPress < 1);
+			addedPhone = 1;
+			added = 1;
+			break;
+		case 3: //user adds contact email
+			do
+			{
+				printf("Enter the email ID index to be added [Max %d]: ", person.emailCount + 1);
+				scanf("%d", &userPress);
+				if (userPress == person.emailCount + 1)
+					person.emailCount++;
+			} while (userPress > person.emailCount + 1 || userPress < 1);
 
+			do
+			{
 				printf("Please enter the email ID: ");
-				scanf("%s", person.email_addresses[userPress - 1]);
+				scanf("%s", buffer);
+			} while (strlen(buffer) > EMAIL_ID_LEN);
+			strcpy(person.email_addresses[userPress - 1], buffer);
 
-				addedEmail = 1;
-				added = 1;
-				break;
-			case 0: //goes back to main menu
-				if (added)
-				{
-					// find unique si number
-					person.si_no = 0;
-					for(int i = 0; i < address_book->count; i++)
-						if (address_book->list[i].si_no == person.si_no)
-							person.si_no++;
+			addedEmail = 1;
+			added = 1;
+			break;
+		case 0: //goes back to main menu
+			if (added)
+			{
+				// find unique si number
+				person.si_no = 0;
+				for (int i = 0; i < address_book->count; i++)
+					if (address_book->list[i].si_no == person.si_no)
+						person.si_no++;
 
-					if (!addedName)
-						strcpy(person.name[0], " ");
-					if (!addedPhone)
-						strcpy(person.phone_numbers[0], " ");
-					if (!addedEmail)
-						strcpy(person.email_addresses[0], " ");
-					address_book->list[address_book->count++] = person;
-				}
-				break;
+				if (!addedName)
+					strcpy(person.name[0], " ");
+				if (!addedPhone)
+					strcpy(person.phone_numbers[0], " ");
+				if (!addedEmail)
+					strcpy(person.email_addresses[0], " ");
+				address_book->list[address_book->count++] = person;
+			}
+			break;
 		}
 	} while (option != 0);
 
@@ -494,7 +509,6 @@ Status search(const char *str, AddressBook *address_book, Field field)
 			int row = 0;
 			ContactInfo *personBuffer = &address_book->list[i]; //find through address book iteration
 
-
 			for (int count = 0; count < 1; count++) //iterating throught the columns
 			{
 				if (personBuffer->si_no == atoi(str)) //print return information when found
@@ -504,7 +518,7 @@ Status search(const char *str, AddressBook *address_book, Field field)
 					printf(": %-35s", personBuffer->phone_numbers[0]);
 					printf(": %-31s:\n", personBuffer->email_addresses[0]);
 					row++; //Do this for the next row
-					
+
 					while (row < 5)
 					{
 						printf(": %-7s", "");
@@ -654,27 +668,27 @@ Status search_contact(AddressBook *address_book)
 		//gets user input based on name, number, email, and serial
 		switch (option)
 		{
-		case 1: //user can search for name
+		case 1:			  //user can search for name
 			field = name; //name will equal field
 			printf("Enter the name: ");
 			gets(buffer); //get name input
 			break;
-		case 2: //user can search for phone number
+		case 2:				//user can search for phone number
 			field = number; //number will equal field
 			printf("Enter the phone number: ");
 			gets(buffer); //get number input
 			break;
-		case 3: //user can search for email
+		case 3:			   //user can search for email
 			field = email; //email will equal field
 			printf("Enter the email address: ");
 			gets(buffer); //get email input
 			break;
-		case 4: //user can search for Serial Id
-			field = serial; //serial wiill equal field 
+		case 4:				//user can search for Serial Id
+			field = serial; //serial wiill equal field
 			printf("Enter the serial number: ");
 			gets(buffer); //get serial input
 			break;
-		case 0: //exit
+		case 0:				  //exit
 			return e_success; //return back to main menu
 		}
 
@@ -686,17 +700,17 @@ Status search_contact(AddressBook *address_book)
 			break;
 
 	} while (option != 0); //continue to loop while the option is not 0
-	
+
 	return e_success; //return back to the main menu
 }
 
 Status edit_contact(AddressBook *address_book)
 {
 	/* Add the functionality for editing contacts here */
-	int option; 				// variable for menu/submenu option
-	char buffer[NAME_LEN];  // char array for name, number, email, s.no
-	Field field; 				// struct that holds enum name, number, email, s.no
-	char userPress; 			// variable for user to enter s or q
+	int option;			   // variable for menu/submenu option
+	char buffer[NAME_LEN]; // char array for name, number, email, s.no
+	Field field;		   // struct that holds enum name, number, email, s.no
+	char userPress;		   // variable for user to enter s or q
 
 	do
 	{
@@ -712,7 +726,7 @@ Status edit_contact(AddressBook *address_book)
 			// ask user to enter name
 			printf("Enter the name: ");
 			// get user input for name; includes any spaces
-			gets(buffer); 
+			gets(buffer);
 			break;
 		case 2: //user edits contact phone number
 			// set enum type to phone number
@@ -808,7 +822,8 @@ Status edit_contact(AddressBook *address_book)
 								printf("Enter the phone number index to be changed [Max %d]: ", personBuffer->numberCount + 1);
 								scanf("%s", &userPress);
 								// remove any unwanted characters
-								while (getchar() != '\n');
+								while (getchar() != '\n')
+									;
 								// if user wants to edit index greater than how many there currently are,
 								if (atoi(&userPress) == personBuffer->numberCount + 1)
 									// increase count of phone numbers
@@ -834,7 +849,8 @@ Status edit_contact(AddressBook *address_book)
 								printf("Enter the email ID index to be changed [Max %d]: ", personBuffer->emailCount + 1);
 								scanf("%s", &userPress);
 								// remove any unwanted characters
-								while (getchar() != '\n');
+								while (getchar() != '\n')
+									;
 								// if user wants to edit index greater than how many there currently are,
 								if (atoi(&userPress) == personBuffer->emailCount + 1)
 									// increase count of email addresses

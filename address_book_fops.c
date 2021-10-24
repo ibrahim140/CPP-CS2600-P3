@@ -19,7 +19,7 @@
 
 Status load_file(AddressBook *address_book)
 {
-	char line[200]; // buffer for line from file
+	char line[1024]; // buffer for line from file
 
 	// Open default file
 	// If doesnt exist it will be created
@@ -75,6 +75,10 @@ Status load_file(AddressBook *address_book)
 			else if(indexColumn == 4)
 			{
 				// iterate through all phone numbers for the specific contact
+				if (personBuffer.numberCount == 0)
+				{
+					strcpy(personBuffer.phone_numbers[0], stringTokenValue);
+				}
 				for(int i = 0; i < personBuffer.numberCount; i++)
 				{
 					// if the contact has a phone #, enter if block
@@ -92,6 +96,10 @@ Status load_file(AddressBook *address_book)
 			else if(indexColumn == 5)
 			{
 				// iterate through all email ID's for the specific contact
+				if (personBuffer.emailCount == 0)
+				{
+					strcpy(personBuffer.email_addresses[0], stringTokenValue);
+				}
 				for(int i = 0; i < personBuffer.emailCount; i++)
 				{
 					// if the contact has an email ID, enter if block
@@ -137,10 +145,16 @@ Status save_file(AddressBook *address_book)
 	{
 		//adds list of count for the phone numbers, emails, identification number, and names
 		fprintf(address_book->fp, "%d,%d,%d,%s,", address_book->list[i].numberCount, address_book->list[i].emailCount, address_book->list[i].si_no, address_book->list[i].name[0]);
+
+		if(address_book->list[i].numberCount == 0)
+			fprintf(address_book->fp, " ,");
 		for (int j = 0; j < address_book->list[i].numberCount; j++)
 		{
 			fprintf(address_book->fp, "%s,", address_book->list[i].phone_numbers[j]);//adds each phone number under that contact
 		}
+
+		if(address_book->list[i].emailCount == 0)
+			fprintf(address_book->fp, " ,");
 		for (int j = 0; j < address_book->list[i].emailCount; j++)
 		{
 			fprintf(address_book->fp, "%s,", address_book->list[i].email_addresses[j]);//added each contact under that phone number
