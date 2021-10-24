@@ -178,6 +178,7 @@ Status list_contacts(AddressBook *address_book)
 		// create a buffer to hold the contacts info
 		ContactInfo *personBuffer;
 
+		//turns "pages" of the contacts in the file
 		for (int i = pageStart; i < pageCount + pageStart; i++)
 		{
 			// break if there are no more contacts to be printed
@@ -214,24 +215,26 @@ Status list_contacts(AddressBook *address_book)
 			printf("=====================================================================================================================\n");
 		}
 		
+		//shows menu to flip through different pages
 		printf("0. Back\n");
 		printf("1. Next\n");
 		printf("2. Previous\n");
 		printf("\nPlease enter an Option: ");
 
-		scanf("%d", &buffer);
-		printf("%d", buffer);
+		scanf("%d", &buffer);//takes input
+		printf("%d", buffer);//shows off input
 
+		//switch statement to flip to different pages
 		switch (buffer)
 		{
-		case 0:
+		case 0://returns back to the menu
 			return e_success;
-		case 1:
+		case 1://goes to the next page in the for loop
 			pageStart += pageCount;
 			if (pageStart >= address_book->count)
 				pageStart = 0;
 			break;
-		case 2:
+		case 2://goes back to previous pages in the contacts
 			if (pageStart == 0)
 			{
 				if (address_book->count % 2 != 0)
