@@ -14,14 +14,13 @@ int get_submenu_option(int type, const char *msg)
 	// check if type is NUM
 	if (type == NUM)
 	{
-		while (1)
+		while (1) //infinite loop
 		{
-			int userNumInput;
+			int userNumInput; // local variable for user input
 
 			printf("%s", msg);			// prompt user for input
 			scanf("%d", &userNumInput); // take input from user
-			while (getchar() != '\n')
-				;
+			while (getchar() != '\n'); // clear standard input
 
 			if ((userNumInput >= 0) && (userNumInput <= 4)) // limit submenu options from 0 to 4
 			{
@@ -38,13 +37,14 @@ int get_submenu_option(int type, const char *msg)
 	// check if type is CHAR
 	else if (type == CHAR)
 	{
-		while (1)
+		while (1) //infinite loop
 		{
-			char userCharInput;
+			char userCharInput; // local variable for user input
 
 			printf("%s", msg);			 // prompt user for input
 			scanf("%c", &userCharInput); // take input from user
 
+			// only check for Y as any other input will just cancel the action
 			if (userCharInput == 'Y' || userCharInput == 'y')
 			{
 				// return y
@@ -74,38 +74,38 @@ int get_option(int type, const char *msg)
 	// check if type is CHAR
 	if (type == CHAR)
 	{
-		while (1)
+		while (1) // infinite loop
 		{
-			char userCharInput;
+			char userCharInput;  // local variable for user input
 
 			printf("%s", msg);			 // prompt user for input
 			scanf("%c", &userCharInput); // take input from user
-			while (getchar() != '\n')
-				;
+			while (getchar() != '\n'); // clear standard input
 
-			// validate user input to y or n
+			// validate user input to Y
 			if (userCharInput == 'Y' || userCharInput == 'y')
 			{
 				return 'Y';
 			}
+			// Validate user input to N
 			else if (userCharInput == 'N' || userCharInput == 'n')
 			{
 				return 'N';
 			}
+			// clear standard output
 			fflush(stdout);
 		}
 	}
 	// check if type is NUM
 	else if (type == NUM)
 	{
-		while (1)
+		while (1) // infinite loop
 		{
-			int userNumInput;
+			int userNumInput;  // local variable for user input
 
 			printf("%s", msg);			// prompt user for input
 			scanf("%d", &userNumInput); // take input from user
-			while (getchar() != '\n')
-				;
+			while (getchar() != '\n'); // clear standard input
 			if ((userNumInput >= 0) && (userNumInput <= 6)) //for main menu, options limited from 0 to 6
 			{
 				// return users input
