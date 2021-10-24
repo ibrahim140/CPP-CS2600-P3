@@ -1,11 +1,8 @@
 #include <stdio.h>
-//#include <stdio_ext.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
 #include "address_book_fops.h" //#include "abk_fileops.h"
-//#include "abk_log.h"
 #include "address_book_menu.h" //#include "abk_menus.h"
 #include "address_book.h"	   //#include "abk.h"
 
@@ -299,10 +296,6 @@ void add_menu(ContactInfo *personBuffer)
 	printf("3. Email ID 1 : %s\n", personBuffer->email_addresses[0]);
 	for (int j = 1; j < personBuffer->emailCount; j++)
 		printf("            %d : %s\n", j + 1, personBuffer->email_addresses[j]);
-	// printf("0. Back\n");
-	// printf("1. Name     : %s\n", addName);
-	// printf("2. Phone No : %s\n", addNumber);
-	// printf("3. Email ID : %s\n\n", addEmail);
 }
 
 // function to print search menu
