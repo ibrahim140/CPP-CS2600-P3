@@ -3,5 +3,7 @@
 
 CC = gcc
 
+all: addBook
+
 addBook: src\\address_book_fops.c src\\address_book_menu.c src\\main.c
 	$(CC) -o bin\\main src\\address_book_fops.c src\\address_book_menu.c src\\main.c
